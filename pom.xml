@@ -1,14 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>gamesys.test</groupId>
-	<artifactId>spring</artifactId>
+	<groupId>codesketck.home.automation</groupId>
+	<artifactId>jax10</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
 		<mockito.version>1.9.5</mockito.version>
 		<junit.version>4.11</junit.version>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>ailis</id>
+			<name>Ailis Maven Releases</name>
+			<url>http://nexus.ailis.de/content/groups/public/</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -31,10 +39,16 @@
 			<artifactId>log4j-over-slf4j</artifactId>
 			<version>1.7.2</version>
 		</dependency>
+
+		<dependency>
+			<groupId>de.ailis.usb4java</groupId>
+			<artifactId>usb4java</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
-		<plugins>		
+		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

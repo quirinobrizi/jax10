@@ -50,6 +50,13 @@ public class CM15 extends AbstractUsbX10Controller {
             this.selectModule(address);
         }
 
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
         byte operation = this.mapHouse(address.getHouse());
         operation += function.nibble();
         // introduce function
