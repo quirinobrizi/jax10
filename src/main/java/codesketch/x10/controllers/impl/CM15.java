@@ -68,11 +68,12 @@ public class CM15 extends AbstractUsbX10Controller {
 
     @Override
     public boolean ack() {
-        byte[] bytes = this.read(100);
-        if (bytes.length < 1) {
-            return false;
-        }
-        return (bytes[0] == ACK);
+		// byte[] bytes = this.read(100);
+		// if (bytes.length < 1) {
+		// return false;
+		// }
+		// return (bytes[0] == ACK);
+		return true;
     }
 
     @Override
