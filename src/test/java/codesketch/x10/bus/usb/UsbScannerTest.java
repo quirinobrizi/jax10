@@ -20,13 +20,14 @@ public class UsbScannerTest {
 	private final UsbScanner testObj = new UsbScanner();
 
 	@Test
-	public void test() {
+	public void test() throws Exception {
 
 		List<X10Controller> controllers = testObj.scan();
 		X10Controller x10Controller = controllers.get(0);
 		Address address = Address.forModule("A", "1");
 		Actuator actuator = x10Controller.actuator(address);
-		actuator.off();
+		Boolean executed = actuator.off();
+		System.out.println(executed);
 	}
 
 }

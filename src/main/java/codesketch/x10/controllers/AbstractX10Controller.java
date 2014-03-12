@@ -13,8 +13,6 @@ public abstract class AbstractX10Controller implements X10Controller {
 
     public AbstractX10Controller(Device device) {
         this.device = device;
-        this.device.open();
-        this.device.claim();
     }
 
     @Override
@@ -28,7 +26,7 @@ public abstract class AbstractX10Controller implements X10Controller {
 
     protected byte mapHouse(String house) {
         Map<String, Byte> houseEncodingMap = this.getHouseEncodingMap();
-        return (byte) (houseEncodingMap.get(house) << 4);
+		return houseEncodingMap.get(house);
     }
 
     protected byte mapUnit(String unit) {

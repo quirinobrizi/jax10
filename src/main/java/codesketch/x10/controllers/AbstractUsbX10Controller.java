@@ -1,8 +1,14 @@
 package codesketch.x10.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import codesketch.x10.Utils;
 import codesketch.x10.bus.Device;
 
 public abstract class AbstractUsbX10Controller extends AbstractX10Controller {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractUsbX10Controller.class);
 
     public AbstractUsbX10Controller(Device device) {
         super(device);
@@ -22,29 +28,24 @@ public abstract class AbstractUsbX10Controller extends AbstractX10Controller {
 
     @Override
     public byte[] read(int lenght) {
-        return getDevice().read(this.readEndpoint(), lenght);
+		this.open();
+		byte[] response = getDevice().read(this.readEndpoint(), lenght);
+		this.close();
+		return response;
     }
 
     @Override
     public void write(byte[] sequence) {
-        this.print("Write: ", sequence);
+		this.open();
+		Utils.prettyPrint("Writing: ", sequence);
         int written = getDevice().write(this.writeEndpoint(), sequence);
         if (written != sequence.length) {
-            // TODO raise exception
+			LOGGER.error("written {} byte of {}", written, sequence.length);
         }
+		this.close();
     }
 
     protected abstract byte readEndpoint();
 
     protected abstract byte writeEndpoint();
-
-    private void print(String prefix, byte[] sequence) {
-        StringBuffer buffer = new StringBuffer(prefix);
-        buffer.append(": [");
-        for (byte b : sequence) {
-            buffer.append(String.format("0x%02X,", b));
-        }
-        buffer.append("]");
-        System.out.println(buffer.toString());
-    }
 }

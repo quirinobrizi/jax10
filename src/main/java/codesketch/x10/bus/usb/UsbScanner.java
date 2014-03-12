@@ -15,26 +15,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import codesketch.x10.bus.Scanner;
-import codesketch.x10.bus.usb.exception.UsbOperationException;
 import codesketch.x10.controllers.X10Controller;
 import codesketch.x10.controllers.impl.CM15;
 
 public class UsbScanner implements Scanner {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UsbScanner.class);
-
-	private final UsbServices usbServices;
-
-	/**
-     * 
-     */
-	public UsbScanner() {
-		try {
-			this.usbServices = UsbHostManager.getUsbServices();
-		} catch (UsbException e) {
-			throw new UsbOperationException(e);
-		}
-	}
 
     @SuppressWarnings("unchecked")
     @Override
@@ -62,8 +48,8 @@ public class UsbScanner implements Scanner {
 		return getUsbServices().getRootUsbHub();
 	}
 
-	protected UsbServices getUsbServices() {
-		return this.usbServices;
+	protected UsbServices getUsbServices() throws UsbException {
+		return UsbHostManager.getUsbServices();
 	}
 
 	private List<codesketch.x10.bus.usb.UsbDevice> retrieveKnownDevices() throws UsbException {
@@ -81,8 +67,7 @@ public class UsbScanner implements Scanner {
 					devices.add(new codesketch.x10.bus.usb.UsbDevice(device));
 				}
 			} catch (UsbException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				LOGGER.warn("exception looking for device {} message {}", knownDevice, e.getMessage());
 			}
         }
         return devices;

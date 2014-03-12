@@ -6,9 +6,6 @@ import javax.usb.UsbException;
 import javax.usb.UsbInterface;
 import javax.usb.UsbIrp;
 import javax.usb.UsbPipe;
-import javax.usb.event.UsbPipeDataEvent;
-import javax.usb.event.UsbPipeErrorEvent;
-import javax.usb.event.UsbPipeListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,25 +58,14 @@ public class UsbDevice implements Device {
     	UsbPipe pipe = null;
     	try {
 			pipe = retrieveAndOpenPipe(readEndpoint);
-			pipe.addUsbPipeListener(new UsbPipeListener() {
-
-				@Override
-				public void errorEventOccurred(UsbPipeErrorEvent event) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void dataEventOccurred(UsbPipeDataEvent event) {
-					System.out.println(event);
-				}
-			});
+			UsbIrp irp = buildUsbIrp(new byte[lenght], pipe);
+			pipe.syncSubmit(irp);
+			return irp.getData();
     	} catch (Exception e) {
 			throw new UsbOperationException(e);
     	}  finally {
 			this.silentlyReleasePipe(pipe);
 		}
-    	return null;
     }
 
     @Override
@@ -127,9 +113,9 @@ public class UsbDevice implements Device {
 		// }
     }
 
-	private UsbPipe retrieveAndOpenPipe(byte writeEndpoint) throws UsbException {
-		UsbEndpoint endpoint = this.iface.getUsbEndpoint(writeEndpoint);
-		UsbPipe pipe = endpoint.getUsbPipe();
+	private UsbPipe retrieveAndOpenPipe(byte endpoint) throws UsbException {
+		UsbEndpoint usbEndpoint = this.iface.getUsbEndpoint(endpoint);
+		UsbPipe pipe = usbEndpoint.getUsbPipe();
 		if (!pipe.isOpen()) {
 			pipe.open();
 		}
