@@ -1,5 +1,6 @@
-package codesketch.x10.controllers.impl;
+package codesketch.x10.controller.impl;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,10 +8,10 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import codesketch.x10.Address;
+import codesketch.x10.Command;
 import codesketch.x10.Function;
 import codesketch.x10.bus.Device;
-import codesketch.x10.controllers.AbstractUsbX10Controller;
+import codesketch.x10.controller.AbstractUsbX10Controller;
 
 public class CM15 extends AbstractUsbX10Controller {
 
@@ -76,21 +77,35 @@ public class CM15 extends AbstractUsbX10Controller {
     }
 
     @Override
-    public void execute(Function function, Address address) {
-        if (address.isValid()) {
-			byte[] functionByteSequence = defineFunctionByteSequence(function, address);
-			this.write(functionByteSequence);
+	public void execute(Command command) {
+		if (command.hasValidAddress()) {
+			if (!Arrays.asList(Function.ALL_LIGHTS_OFF, Function.ALL_LIGHTS_ON, Function.ALL_UNITS_OFF).contains(command.getFunction())) {
+				byte[] selectByteSequence = command.defineSelectByteSequence(getHouseEncodingMap(), getUnitEncodingMap());
+				this.write(selectByteSequence);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			byte[] payloadnByteSequence = command.defineFunctionByteSequence(getHouseEncodingMap());
+			this.write(payloadnByteSequence);
         }
 
     }
 
     @Override
     public boolean ack() {
-		byte[] bytes = this.read(1);
-		if (bytes.length < 1) {
+		try {
+			byte[] bytes = this.read(1);
+			if (bytes.length < 1) {
+				return false;
+			}
+			return (bytes[0] == Protocol.ACK.code());
+		} catch (Exception e) {
 			return false;
 		}
-		return (bytes[0] == Protocol.ACK.code());
     }
 
     @Override
@@ -127,18 +142,6 @@ public class CM15 extends AbstractUsbX10Controller {
 		} catch (Exception e) {
 			LOGGER.info("unable to set or verify controller time");
 		}
-	}
-
-	// private byte[] defineSelectModuleByteSequence(Address address) {
-	// byte house = (byte) (this.mapHouse(address.getHouse()) << 4);
-	// byte unit = this.mapUnit(address.getUnit());
-	// return new byte[] { Protocol.ADDRESS.symbol(), (byte) (house + unit) };
-	// }
-
-	private byte[] defineFunctionByteSequence(Function function, Address address) {
-		byte operation = (byte) (this.mapHouse(address.getHouse()) << 4);
-		operation += function.nibble();
-		return new byte[] { Protocol.FUNCTION.code(), operation };
 	}
 
 	public static enum Protocol {

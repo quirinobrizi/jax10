@@ -8,8 +8,8 @@ import java.util.List;
 import org.junit.Test;
 
 import codesketch.x10.Address;
-import codesketch.x10.actuators.Actuator;
-import codesketch.x10.controllers.X10Controller;
+import codesketch.x10.actuator.Actuator;
+import codesketch.x10.controller.X10Controller;
 
 /**
  * @author quirino.brizi (quirino.brizi@gmail.com)

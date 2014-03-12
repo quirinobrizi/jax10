@@ -2,7 +2,7 @@ package codesketch.x10.bus;
 
 import java.util.List;
 
-import codesketch.x10.controllers.X10Controller;
+import codesketch.x10.controller.X10Controller;
 
 public interface Scanner {
 

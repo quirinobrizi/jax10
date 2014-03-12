@@ -15,8 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import codesketch.x10.bus.Scanner;
-import codesketch.x10.controllers.X10Controller;
-import codesketch.x10.controllers.impl.CM15;
+import codesketch.x10.controller.X10Controller;
+import codesketch.x10.controller.impl.CM15;
 
 public class UsbScanner implements Scanner {
 

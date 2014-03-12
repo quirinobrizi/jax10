@@ -10,8 +10,9 @@ import static org.mockito.Mockito.when;
 import org.junit.Test;
 
 import codesketch.x10.Address;
-import codesketch.x10.actuators.Actuator;
+import codesketch.x10.actuator.Actuator;
 import codesketch.x10.bus.Device;
+import codesketch.x10.controller.impl.CM15;
 
 public class CM15Test {
 

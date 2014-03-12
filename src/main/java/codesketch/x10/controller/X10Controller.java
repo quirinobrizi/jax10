@@ -1,10 +1,10 @@
-package codesketch.x10.controllers;
+package codesketch.x10.controller;
 
 import java.util.Map;
 
 import codesketch.x10.Address;
-import codesketch.x10.Function;
-import codesketch.x10.actuators.Actuator;
+import codesketch.x10.Command;
+import codesketch.x10.actuator.Actuator;
 
 public interface X10Controller {
 
@@ -17,15 +17,12 @@ public interface X10Controller {
     Map<String, Byte> getUnitEncodingMap();
     
     /**
-     * Execute a function on the controller. i.e. Turn on a light.
-     * 
-     * @param function
-     *            the function to execute.
-     * @param address
-     *            the module address.
-     */
-    // TODO add dim amount
-    void execute(Function function, Address address);
+	 * Execute a function on the controller. i.e. Turn on a light.
+	 * 
+	 * @param command
+	 *            the command to execute
+	 */
+	void execute(Command command);
 
     /**
      * Open the device and set up the controller.

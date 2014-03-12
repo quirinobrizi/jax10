@@ -1,10 +1,10 @@
-package codesketch.x10.controllers;
+package codesketch.x10.controller;
 
 import java.util.Map;
 
 import codesketch.x10.Address;
-import codesketch.x10.actuators.Actuator;
-import codesketch.x10.actuators.SwitchableX10Actuator;
+import codesketch.x10.actuator.Actuator;
+import codesketch.x10.actuator.X10ActuatorDefault;
 import codesketch.x10.bus.Device;
 
 public abstract class AbstractX10Controller implements X10Controller {
@@ -17,7 +17,7 @@ public abstract class AbstractX10Controller implements X10Controller {
 
     @Override
     public Actuator actuator(Address address) {
-        return new SwitchableX10Actuator(address, this);
+        return new X10ActuatorDefault(address, this);
     }
 
     protected Device getDevice() {

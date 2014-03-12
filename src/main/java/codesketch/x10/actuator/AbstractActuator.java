@@ -1,7 +1,7 @@
-package codesketch.x10.actuators;
+package codesketch.x10.actuator;
 
 import codesketch.x10.Address;
-import codesketch.x10.controllers.X10Controller;
+import codesketch.x10.controller.X10Controller;
 
 public abstract class AbstractActuator implements Actuator {
 
