@@ -11,8 +11,8 @@ import codesketch.x10.controllers.AbstractUsbX10Controller;
 public class CM15 extends AbstractUsbX10Controller {
 
     private static final byte ACK = 0x55;
-    private static final byte EXECUTE = 0x06;
-    private static final byte SELECT = 0x04;
+    private static final byte FUNCTION = 0x06;
+    private static final byte ADDRESS = 0x04;
 
     public CM15(Device device) {
         super(device);
@@ -61,7 +61,7 @@ public class CM15 extends AbstractUsbX10Controller {
         operation += function.nibble();
         // introduce function
 
-        byte[] sequence = { EXECUTE, operation };
+        byte[] sequence = { FUNCTION, operation };
         this.write(sequence);
 
     }
@@ -89,7 +89,7 @@ public class CM15 extends AbstractUsbX10Controller {
     private void selectModule(Address address) {
         byte house = this.mapHouse(address.getHouse());
         byte unit = this.mapUnit(address.getUnit());
-        byte[] sequence = { SELECT, (byte) (house + unit) };
+        byte[] sequence = { ADDRESS, (byte) (house + unit) };
         this.write(sequence);
     }
 
