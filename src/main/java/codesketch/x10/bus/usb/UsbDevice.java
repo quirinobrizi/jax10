@@ -90,7 +90,7 @@ public class UsbDevice implements Device {
 			pipe = retrieveAndOpenPipe(writeEndpoint);
 			UsbIrp irp = buildUsbIrp(sequence, pipe);
 
-			pipe.asyncSubmit(irp);
+			pipe.syncSubmit(irp);
 
 			Utils.prettyPrint("Received: ", irp.getData());
 			return irp.getActualLength();
@@ -142,6 +142,7 @@ public class UsbDevice implements Device {
 	private void silentlyReleasePipe(UsbPipe pipe) {
 		try {
 			if (null != pipe && pipe.isOpen()) {
+				pipe.abortAllSubmissions();
 				pipe.close();
 			}
 		} catch (Exception e) {
