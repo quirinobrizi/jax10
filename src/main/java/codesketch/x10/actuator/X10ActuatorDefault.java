@@ -13,14 +13,18 @@ public class X10ActuatorDefault extends AbstractActuator {
 
     @Override
     public Boolean on() {
-		getController().execute(Command.with(Function.ON, getAddress()));
-        return getController().ack();
+		X10Controller controller = getController();
+		Command command = controller.command(Function.ON, getAddress(), null);
+		controller.execute(command);
+        return controller.ack();
     }
 
     @Override
     public Boolean off() {
-		getController().execute(Command.with(Function.OFF, getAddress()));
-        return getController().ack();
+		X10Controller controller = getController();
+		Command command = controller.command(Function.OFF, getAddress(), null);
+		controller.execute(command);
+        return controller.ack();
     }
 
 	/*
@@ -31,7 +35,8 @@ public class X10ActuatorDefault extends AbstractActuator {
 	@Override
 	public Boolean dim(int amount) {
 		X10Controller controller = getController();
-		controller.execute(Command.with(Function.DIM, getAddress(), amount));
+		Command command = controller.command(Function.DIM, getAddress(), amount);
+		controller.execute(command);
 		return controller.ack();
 	}
 
@@ -42,8 +47,10 @@ public class X10ActuatorDefault extends AbstractActuator {
 	 */
 	@Override
 	public Boolean allLightsOn() {
-		getController().execute(Command.with(Function.ALL_LIGHTS_ON, getAddress()));
-		return getController().ack();
+		X10Controller controller = getController();
+		Command command = controller.command(Function.ALL_LIGHTS_ON, getAddress(), null);
+		controller.execute(command);
+		return controller.ack();
 	}
 
 	/*
@@ -53,8 +60,10 @@ public class X10ActuatorDefault extends AbstractActuator {
 	 */
 	@Override
 	public Boolean allLightsOff() {
-		getController().execute(Command.with(Function.ALL_LIGHTS_OFF, getAddress()));
-		return getController().ack();
+		X10Controller controller = getController();
+		Command command = controller.command(Function.ALL_LIGHTS_OFF, getAddress(), null);
+		controller.execute(command);
+		return controller.ack();
 	}
 
 	/*
@@ -64,8 +73,10 @@ public class X10ActuatorDefault extends AbstractActuator {
 	 */
 	@Override
 	public Boolean allUnitsOff() {
-		getController().execute(Command.with(Function.ALL_UNITS_OFF, getAddress()));
-		return getController().ack();
+		X10Controller controller = getController();
+		Command command = controller.command(Function.ALL_UNITS_OFF, getAddress(), null);
+		controller.execute(command);
+		return controller.ack();
 	}
 
 }

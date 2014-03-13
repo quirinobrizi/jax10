@@ -1,7 +1,5 @@
 package codesketch.x10.controller;
 
-import java.util.Map;
-
 import codesketch.x10.Address;
 import codesketch.x10.actuator.Actuator;
 import codesketch.x10.actuator.X10ActuatorDefault;
@@ -22,15 +20,5 @@ public abstract class AbstractX10Controller implements X10Controller {
 
     protected Device getDevice() {
         return device;
-    }
-
-    protected byte mapHouse(String house) {
-        Map<String, Byte> houseEncodingMap = this.getHouseEncodingMap();
-		return houseEncodingMap.get(house);
-    }
-
-    protected byte mapUnit(String unit) {
-        Map<String, Byte> unitEncodingMap = this.getUnitEncodingMap();
-        return unitEncodingMap.get(unit);
     }
 }

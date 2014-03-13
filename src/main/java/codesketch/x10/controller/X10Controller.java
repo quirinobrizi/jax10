@@ -1,9 +1,8 @@
 package codesketch.x10.controller;
 
-import java.util.Map;
-
 import codesketch.x10.Address;
 import codesketch.x10.Command;
+import codesketch.x10.Function;
 import codesketch.x10.actuator.Actuator;
 
 public interface X10Controller {
@@ -12,10 +11,6 @@ public interface X10Controller {
 
     short productId();
 
-    Map<String, Byte> getHouseEncodingMap();
-
-    Map<String, Byte> getUnitEncodingMap();
-    
     /**
 	 * Execute a function on the controller. i.e. Turn on a light.
 	 * 
@@ -66,4 +61,18 @@ public interface X10Controller {
      * @return the Actuator.
      */
     Actuator actuator(Address address);
+
+	/**
+	 * Generate a command instance that can be used whit this
+	 * {@link X10Controller}.
+	 * 
+	 * @param function
+	 *            the protocol function to operate
+	 * @param address
+	 *            the device address as house-unit code
+	 * @param dimAmount
+	 *            the dim amount if the requested function is dim.
+	 * @return a command
+	 */
+	Command command(Function function, Address address, Integer dimAmount);
 }
