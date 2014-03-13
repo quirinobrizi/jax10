@@ -10,8 +10,11 @@ I'm following what's reported at:
 
 Integrating (at least trying to...) everithing whit personal experiments.
 
-Any suggestion guideline is welcome!
+Any suggestion is welcome!
 
+Output from lsusb -v
+
+```bash
 
 Bus 003 Device 106: ID 0bc7:0001 X10 Wireless Technology, Inc. ActiveHome (ACPI-compliant)
 Device Descriptor:
@@ -71,4 +74,6 @@ Device Descriptor:
         bInterval              10
 Device Status:     0x0001
   Self Powered
+```
 
+ * This is now working for turning on and off appliances when no house/unit selection payload is sent
