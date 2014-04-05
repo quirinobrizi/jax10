@@ -82,8 +82,10 @@ Device Status:     0x0001
 Example:
 
 ```
-List<X10Controller> controllers = testObj.provideAllAvailableControllers();
-X10Controller x10Controller = controllers.get(0);
+UsbControllerProvider provider = new UsbControllerProvider();
+X10Controller controller = provider.provideControllerBy(ControllerProvider.Definition.CM15);
+// List<X10Controller> controllers = provider.provideAllAvailableControllers();
+// X10Controller x10Controller = controllers.get(0);
 Address address = Address.forModule("A", "1");
 Actuator actuator = x10Controller.actuator(address);
 Boolean executed = actuator.on();
