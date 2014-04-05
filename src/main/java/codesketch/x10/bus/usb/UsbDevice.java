@@ -38,7 +38,9 @@ public class UsbDevice implements Device {
     public void claim() {
 		this.iface = (UsbInterface) this.configuration.getUsbInterfaces().get(0);
 		try {
-			this.iface.claim();
+			if (!this.iface.isClaimed()) {
+				this.iface.claim();
+			}
 		} catch (Exception e) {
 			throw new UsbOperationException(e);
 		}

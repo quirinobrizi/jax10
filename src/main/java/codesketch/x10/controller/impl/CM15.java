@@ -41,7 +41,7 @@ public class CM15 extends AbstractUsbX10Controller {
 		for (byte[] chunk : payload) {
 			this.write(chunk);
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

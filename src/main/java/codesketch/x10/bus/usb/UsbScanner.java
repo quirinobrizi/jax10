@@ -40,9 +40,33 @@ public class UsbScanner implements Scanner {
 
     @Override
     public <C extends X10Controller> C scan(short vendorId, short productId, Class<C> type) {
-        // TODO Auto-generated method stub
-        return null;
+		try {
+			UsbHub retrieveUsbHub = this.retrieveUsbHub();
+			UsbDevice usbDevice = this.findDevice(retrieveUsbHub, vendorId, productId);
+			codesketch.x10.bus.usb.UsbDevice device = new codesketch.x10.bus.usb.UsbDevice(usbDevice);
+
+			// Constructor<C> constructor =
+			// type.getConstructor(codesketch.x10.bus.usb.UsbDevice.class);
+			// return constructor.newInstance(device);
+			return (C) new CM15(device);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
     }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * codesketch.x10.bus.Scanner#scanFor(codesketch.x10.bus.usb.UsbScanner.
+	 * KnownDevice)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public <C extends X10Controller> C scanFor(KnownDevice knownDevice) {
+		return (C) this.scan(knownDevice.getVendorId(), knownDevice.getProductId(), knownDevice.getType());
+	}
 
 	public UsbHub retrieveUsbHub() throws UsbException {
 		return getUsbServices().getRootUsbHub();
@@ -92,16 +116,18 @@ public class UsbScanner implements Scanner {
 		return null;
 	}
 
-    private enum KnownDevice {
+	public enum KnownDevice {
 
-        CM15((short) 0x0BC7, (short) 0x0001);
+		CM15((short) 0x0BC7, (short) 0x0001, codesketch.x10.controller.impl.CM15.class);
 
         private final short vendorId;
         private final short productId;
+		private final Class<? extends X10Controller> type;
 
-        private KnownDevice(short vendorId, short productId) {
+		private KnownDevice(short vendorId, short productId, Class<? extends X10Controller> type) {
             this.vendorId = vendorId;
             this.productId = productId;
+			this.type = type;
         }
 
         public short getVendorId() {
@@ -111,6 +137,13 @@ public class UsbScanner implements Scanner {
         public short getProductId() {
             return productId;
         }
+
+		/**
+		 * @return the type
+		 */
+		public Class<? extends X10Controller> getType() {
+			return type;
+		}
 
 		/*
 		 * (non-Javadoc)
