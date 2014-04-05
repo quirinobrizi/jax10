@@ -77,3 +77,14 @@ Device Status:     0x0001
 ```
 
  * This is now working for turning on and off appliances when no house/unit selection payload is sent
+ * This is now working on RaspberryPi
+
+Example:
+
+```
+List<X10Controller> controllers = testObj.provideAllAvailableControllers();
+X10Controller x10Controller = controllers.get(0);
+Address address = Address.forModule("A", "1");
+Actuator actuator = x10Controller.actuator(address);
+Boolean executed = actuator.on();
+```
