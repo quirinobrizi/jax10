@@ -5,11 +5,23 @@
 	<artifactId>jax10</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
 
-	<properties>
-		<mockito.version>1.9.5</mockito.version>
-		<junit.version>4.11</junit.version>
-	</properties>
-
+	<organization>
+		<name>codesketck.eu</name>
+	</organization>
+	
+	<developers>
+		<developer>
+			<name>Quirino Brizi</name>
+			<email>quirino.brizi@gmail.com</email>
+			<organization>codesketch.eu</organization>
+			<timezone>+0</timezone>
+			<roles>
+				<role>Maintainer</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+	
 	<repositories>
 		<repository>
 			<id>ailis</id>
@@ -17,6 +29,12 @@
 			<url>http://nexus.ailis.de/content/groups/public/</url>
 		</repository>
 	</repositories>
+
+	<properties>
+		<mockito.version>1.9.5</mockito.version>
+		<junit.version>4.11</junit.version>
+		<slf4j.version>1.7.6</slf4j.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -32,19 +50,31 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.6</version>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.usb4java</groupId>
 			<artifactId>usb4java-javax</artifactId>
 			<version>1.2.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.usb</groupId>
+					<artifactId>usb-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.6</version>
+			<groupId>javax.usb</groupId>
+			<artifactId>usb-api</artifactId>
+			<version>1.0.2</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -59,4 +89,5 @@
 			</plugin>
 		</plugins>
 	</build>
+	
 </project>

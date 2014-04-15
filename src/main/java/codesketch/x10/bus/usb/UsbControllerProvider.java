@@ -86,8 +86,8 @@ public class UsbControllerProvider implements ControllerProvider {
         return devices;
     }
 
+    @SuppressWarnings("unchecked")
     private UsbDevice findDevice(UsbHub usbHub, short vendorId, short productId) throws UsbException {
-        @SuppressWarnings("unchecked")
         List<UsbDevice> attachedUsbDevices = usbHub.getAttachedUsbDevices();
         for (UsbDevice usbDevice : attachedUsbDevices) {
             UsbDeviceDescriptor desc = usbDevice.getUsbDeviceDescriptor();

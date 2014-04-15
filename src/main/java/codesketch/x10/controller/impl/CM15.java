@@ -22,7 +22,7 @@ public class CM15 extends AbstractUsbX10Controller {
 
     public CM15(Device device) {
         super(device);
-		this.verifyAndSetTime();
+        // this.verifyAndSetTime();
     }
 
     @Override
@@ -40,14 +40,16 @@ public class CM15 extends AbstractUsbX10Controller {
 		List<byte[]> payload = command.toBytePayload();
 		for (byte[] chunk : payload) {
 			this.write(chunk);
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+            sleepSilently();
 		}
 
+    }
+
+    private void sleepSilently() {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+        }
     }
 
 	/*
@@ -148,6 +150,10 @@ public class CM15 extends AbstractUsbX10Controller {
 			return Arrays.asList(Function.ALL_LIGHTS_OFF, Function.ALL_LIGHTS_ON, Function.ALL_UNITS_OFF).contains(this.function);
 		}
 
+        private boolean isDimOrBrightFunction() {
+            return Arrays.asList(Function.BRIGHT, Function.DIM).contains(this.function);
+        }
+
 		private byte[] defineSelectByteSequence(Map<String, Byte> houses, Map<String, Byte> units) {
 			byte house = (byte) (houses.get(address.getHouse()) << 4);
 			byte unit = units.get(address.getUnit());
@@ -157,7 +163,12 @@ public class CM15 extends AbstractUsbX10Controller {
 		private byte[] defineFunctionByteSequence(Map<String, Byte> houses) {
 			byte operation = (byte) (houses.get(this.address.getHouse()) << 4);
 			operation += function.nibble();
-			return new byte[] { Protocol.FUNCTION.code(), operation };
+            if (isDimOrBrightFunction()) {
+                byte amount = (byte) (this.dimAmount * 2);
+                return new byte[] { Protocol.FUNCTION.code(), operation, amount };
+            } else {
+                return new byte[] { Protocol.FUNCTION.code(), operation };
+            }
 		}
 
 		private static enum Protocol {

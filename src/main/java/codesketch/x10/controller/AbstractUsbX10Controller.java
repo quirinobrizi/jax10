@@ -17,32 +17,44 @@ public abstract class AbstractUsbX10Controller extends AbstractX10Controller {
     @Override
     public void open() {
         Device device = getDevice();
-        device.open();
-        device.claim();
+        if (null != device) {
+            device.open();
+            device.claim();
+        }
     }
 
     @Override
     public void close() {
-        getDevice().close();
+        Device device = getDevice();
+        if (null != device) {
+            device.close();
+        }
     }
 
     @Override
     public byte[] read(int lenght) {
 		this.open();
-		byte[] response = getDevice().read(this.readEndpoint(), lenght);
-		this.close();
-		return response;
+		Device device = getDevice();
+        if (null != device) {
+            byte[] response = device.read(this.readEndpoint(), lenght);
+            this.close();
+            return response;
+        }
+        return new byte[] {};
     }
 
     @Override
     public void write(byte[] sequence) {
 		this.open();
 		Utils.prettyPrint("Writing: ", sequence);
-        int written = getDevice().write(this.writeEndpoint(), sequence);
-        if (written != sequence.length) {
-			LOGGER.error("written {} byte of {}", written, sequence.length);
+        Device device = getDevice();
+        if (null != device) {
+            int written = device.write(this.writeEndpoint(), sequence);
+            if (written != sequence.length) {
+                LOGGER.error("written {} byte of {}", written, sequence.length);
+            }
+            this.close();
         }
-		this.close();
     }
 
     protected abstract byte readEndpoint();

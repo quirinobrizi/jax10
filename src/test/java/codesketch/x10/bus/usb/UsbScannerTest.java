@@ -51,11 +51,12 @@ public class UsbScannerTest {
     @Test
     public void test() throws Exception {
 
-        List<X10Controller> controllers = testObj.provideAllAvailableControllers();
-        X10Controller x10Controller = controllers.get(0);
-        Address address = Address.forModule("A", "1");
+        UsbControllerProvider provider = new UsbControllerProvider();
+        X10Controller x10Controller = provider.provideControllerBy(Definition.CM15);
+        // X10Controller x10Controller = controllers.get(0);
+        Address address = Address.forModule("A", "2");
         Actuator actuator = x10Controller.actuator(address);
-        Boolean executed = actuator.on();
+        Boolean executed = actuator.off();
         System.out.println(executed);
     }
 
