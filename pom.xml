@@ -9,6 +9,12 @@
 		<name>codesketck.eu</name>
 	</organization>
 	
+	<scm>
+		<connection>scm:git:https://github.com/quirinobrizi/jax10.git</connection>
+		<developerConnection>scm:git:https://github.com/quirinobrizi/jax10.git</developerConnection>
+		<url>https://github.com/quirinobrizi/jax10</url>
+	</scm>
+	
 	<developers>
 		<developer>
 			<name>Quirino Brizi</name>
@@ -86,6 +92,11 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5</version>
 			</plugin>
 		</plugins>
 	</build>
