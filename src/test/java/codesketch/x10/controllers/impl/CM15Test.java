@@ -16,21 +16,21 @@ import codesketch.x10.controller.impl.CM15;
 
 public class CM15Test {
 
-    @Test
-    public void test() {
-        Device device = mock(Device.class);
-        // write
-        when(device.write(anyByte(), any(byte[].class))).thenReturn(2);
-        // ack success
-        when(device.read(anyByte(), anyInt())).thenReturn(new byte[] { 0x55 });
+	@Test
+	public void test() {
+		Device device = mock(Device.class);
+		// write
+		when(device.write(anyByte(), any(byte[].class))).thenReturn(2);
+		// ack success
+		when(device.read(anyByte(), anyInt())).thenReturn(new byte[] { 0x55 });
 
-        Address address = Address.forModule("A", "1");
-        CM15 controller = new CM15(device);
+		Address address = Address.forModule("A", "1");
+		CM15 controller = new CM15(device);
 
-        Actuator actuator = controller.actuator(address);
-        Boolean success = actuator.on();
+		Actuator actuator = controller.actuator(address);
+		Boolean success = actuator.on();
 
-        assertTrue(success);
-    }
+		assertTrue(success);
+	}
 
 }

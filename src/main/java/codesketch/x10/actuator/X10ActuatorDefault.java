@@ -7,25 +7,25 @@ import codesketch.x10.controller.X10Controller;
 
 public class X10ActuatorDefault extends AbstractActuator {
 
-    public X10ActuatorDefault(Address address, X10Controller controller) {
-        super(address, controller);
-    }
+	public X10ActuatorDefault(Address address, X10Controller controller) {
+		super(address, controller);
+	}
 
-    @Override
-    public Boolean on() {
+	@Override
+	public Boolean on() {
 		X10Controller controller = getController();
 		Command command = controller.command(Function.ON, getAddress(), null);
 		controller.execute(command);
-        return controller.ack();
-    }
+		return controller.ack();
+	}
 
-    @Override
-    public Boolean off() {
+	@Override
+	public Boolean off() {
 		X10Controller controller = getController();
 		Command command = controller.command(Function.OFF, getAddress(), null);
 		controller.execute(command);
-        return controller.ack();
-    }
+		return controller.ack();
+	}
 
 	/*
 	 * (non-Javadoc)

@@ -30,12 +30,12 @@ public class UsbDevice implements Device {
 	}
 
 	@Override
-    public void open() {
+	public void open() {
 		this.configuration = this.device.getActiveUsbConfiguration();
 	}
 
 	@Override
-    public void claim() {
+	public void claim() {
 		this.iface = (UsbInterface) this.configuration.getUsbInterfaces().get(0);
 		try {
 			if (!this.iface.isClaimed()) {
@@ -46,32 +46,32 @@ public class UsbDevice implements Device {
 		}
 	}
 
-    @Override
-    public void close() {
+	@Override
+	public void close() {
 		try {
 			this.iface.release();
 		} catch (Exception e) {
 			throw new UsbOperationException(e);
 		}
-    }
+	}
 
-    @Override
-    public byte[] read(byte readEndpoint, int lenght) {
-    	UsbPipe pipe = null;
-    	try {
+	@Override
+	public byte[] read(byte readEndpoint, int lenght) {
+		UsbPipe pipe = null;
+		try {
 			pipe = retrieveAndOpenPipe(readEndpoint);
 			UsbIrp irp = buildUsbIrp(new byte[lenght], pipe);
 			pipe.syncSubmit(irp);
 			return irp.getData();
-    	} catch (Exception e) {
+		} catch (Exception e) {
 			throw new UsbOperationException(e);
-    	}  finally {
+		} finally {
 			this.silentlyReleasePipe(pipe);
 		}
-    }
+	}
 
-    @Override
-    public int write(byte writeEndpoint, byte[] sequence) {
+	@Override
+	public int write(byte writeEndpoint, byte[] sequence) {
 
 		UsbPipe pipe = null;
 		try {
@@ -113,7 +113,7 @@ public class UsbDevice implements Device {
 		// } else {
 		//
 		// }
-    }
+	}
 
 	private UsbPipe retrieveAndOpenPipe(byte endpoint) throws UsbException {
 		UsbEndpoint usbEndpoint = this.iface.getUsbEndpoint(endpoint);
@@ -139,11 +139,11 @@ public class UsbDevice implements Device {
 	}
 
 	private UsbIrp buildUsbIrp(byte[] sequence, UsbPipe pipe) {
-	    UsbIrp irp = pipe.createUsbIrp();
-	    irp.setData(sequence);
-	    irp.setLength(sequence.length);
-	    irp.setAcceptShortPacket(true);
-	    return irp;
-    }
+		UsbIrp irp = pipe.createUsbIrp();
+		irp.setData(sequence);
+		irp.setLength(sequence.length);
+		irp.setAcceptShortPacket(true);
+		return irp;
+	}
 
 }

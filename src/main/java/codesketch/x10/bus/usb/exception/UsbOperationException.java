@@ -5,7 +5,7 @@ package codesketch.x10.bus.usb.exception;
 
 /**
  * @author quirino
- *
+ * 
  */
 public class UsbOperationException extends RuntimeException {
 
@@ -52,8 +52,7 @@ public class UsbOperationException extends RuntimeException {
 	 * @param enableSuppression
 	 * @param writableStackTrace
 	 */
-	public UsbOperationException(String message, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
+	public UsbOperationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 		// TODO Auto-generated constructor stub
 	}

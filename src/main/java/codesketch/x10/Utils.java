@@ -5,7 +5,7 @@ package codesketch.x10;
 
 /**
  * @author quirino.brizi (quirino.brizi@gmail.com)
- *
+ * 
  */
 public final class Utils {
 

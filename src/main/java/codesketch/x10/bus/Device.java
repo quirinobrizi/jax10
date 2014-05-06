@@ -2,13 +2,13 @@ package codesketch.x10.bus;
 
 public interface Device {
 
-    void open();
+	void open();
 
-    void claim();
+	void claim();
 
-    void close();
+	void close();
 
-    byte[] read(byte readEndpoint, int lenght);
+	byte[] read(byte readEndpoint, int lenght);
 
-    int write(byte writeEndpoint, byte[] sequence);
+	int write(byte writeEndpoint, byte[] sequence);
 }

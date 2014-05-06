@@ -19,46 +19,46 @@ import codesketch.x10.controller.impl.CM15;
 
 public class SwitchableX10ActuatorTest {
 
-    @Test
-    public void testOn_success() {
-        Device device = mock(Device.class);
-        // write
-        when(device.write(anyByte(), any(byte[].class))).thenReturn(2);
-        // ack success
-        when(device.read(anyByte(), anyInt())).thenReturn(new byte[] { 0x55 });
+	@Test
+	public void testOn_success() {
+		Device device = mock(Device.class);
+		// write
+		when(device.write(anyByte(), any(byte[].class))).thenReturn(2);
+		// ack success
+		when(device.read(anyByte(), anyInt())).thenReturn(new byte[] { 0x55 });
 
-        CM15 controller = new CM15(device);
-        Address address = Address.forModule("A", "1");
+		CM15 controller = new CM15(device);
+		Address address = Address.forModule("A", "1");
 
-        X10ActuatorDefault testObj = new X10ActuatorDefault(address, controller);
-        Boolean success = testObj.on();
+		X10ActuatorDefault testObj = new X10ActuatorDefault(address, controller);
+		Boolean success = testObj.on();
 
-        verify(device, times(3)).open();
-        verify(device, times(3)).claim();
-        verify(device).write(anyByte(), eq(new byte[] { 0x04, 0x66 }));
-        verify(device).write(anyByte(), eq(new byte[] { 0x06, 0x62 }));
-        assertTrue(success);
-    }
+		verify(device, times(3)).open();
+		verify(device, times(3)).claim();
+		verify(device).write(anyByte(), eq(new byte[] { 0x04, 0x66 }));
+		verify(device).write(anyByte(), eq(new byte[] { 0x06, 0x62 }));
+		assertTrue(success);
+	}
 
-    @Test
-    public void testOff_success() {
-        Device device = mock(Device.class);
-        // write
-        when(device.write(anyByte(), any(byte[].class))).thenReturn(2);
-        // ack success
-        when(device.read(anyByte(), anyInt())).thenReturn(new byte[] { 0x55 });
+	@Test
+	public void testOff_success() {
+		Device device = mock(Device.class);
+		// write
+		when(device.write(anyByte(), any(byte[].class))).thenReturn(2);
+		// ack success
+		when(device.read(anyByte(), anyInt())).thenReturn(new byte[] { 0x55 });
 
-        CM15 controller = new CM15(device);
-        Address address = Address.forModule("A", "1");
+		CM15 controller = new CM15(device);
+		Address address = Address.forModule("A", "1");
 
-        X10ActuatorDefault testObj = new X10ActuatorDefault(address, controller);
-        Boolean success = testObj.off();
+		X10ActuatorDefault testObj = new X10ActuatorDefault(address, controller);
+		Boolean success = testObj.off();
 
-        verify(device, times(3)).open();
-        verify(device, times(3)).claim();
-        verify(device).write(anyByte(), eq(new byte[] { 0x04, 0x66 }));
-        verify(device).write(anyByte(), eq(new byte[] { 0x06, 0x63 }));
-        assertTrue(success);
-    }
+		verify(device, times(3)).open();
+		verify(device, times(3)).claim();
+		verify(device).write(anyByte(), eq(new byte[] { 0x04, 0x66 }));
+		verify(device).write(anyByte(), eq(new byte[] { 0x06, 0x63 }));
+		assertTrue(success);
+	}
 
 }

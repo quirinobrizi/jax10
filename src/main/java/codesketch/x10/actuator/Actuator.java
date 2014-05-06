@@ -2,9 +2,9 @@ package codesketch.x10.actuator;
 
 public interface Actuator {
 
-    Boolean on();
+	Boolean on();
 
-    Boolean off();
+	Boolean off();
 
 	Boolean dim(int amount);
 

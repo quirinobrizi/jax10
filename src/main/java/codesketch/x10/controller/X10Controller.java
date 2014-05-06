@@ -7,11 +7,11 @@ import codesketch.x10.actuator.Actuator;
 
 public interface X10Controller {
 
-    short vendorId();
+	short vendorId();
 
-    short productId();
+	short productId();
 
-    /**
+	/**
 	 * Execute a function on the controller. i.e. Turn on a light.
 	 * 
 	 * @param command
@@ -19,48 +19,48 @@ public interface X10Controller {
 	 */
 	void execute(Command command);
 
-    /**
-     * Open the device and set up the controller.
-     */
-    void open();
+	/**
+	 * Open the device and set up the controller.
+	 */
+	void open();
 
-    /**
-     * Close the controller
-     */
-    void close();
+	/**
+	 * Close the controller
+	 */
+	void close();
 
-    /**
-     * Read from the controller
-     * 
-     * @param lenght
-     *            the amount of byte to read.
-     * @return the read bytes.
-     */
-    byte[] read(int lenght);
+	/**
+	 * Read from the controller
+	 * 
+	 * @param lenght
+	 *            the amount of byte to read.
+	 * @return the read bytes.
+	 */
+	byte[] read(int lenght);
 
-    /**
-     * Write a sequence off bytes to the controller.
-     * 
-     * @param sequence
-     *            the sequence of byte to have to write.
-     */
-    void write(byte[] sequence);
+	/**
+	 * Write a sequence off bytes to the controller.
+	 * 
+	 * @param sequence
+	 *            the sequence of byte to have to write.
+	 */
+	void write(byte[] sequence);
 
-    /**
-     * Verifies whether the controller responded well or not.
-     * 
-     * @return true if the controller responded well false otherwise.
-     */
-    boolean ack();
-    
-    /**
-     * Get an actuator for a module on this controller.
-     * 
-     * @param address
-     *            the module address
-     * @return the Actuator.
-     */
-    Actuator actuator(Address address);
+	/**
+	 * Verifies whether the controller responded well or not.
+	 * 
+	 * @return true if the controller responded well false otherwise.
+	 */
+	boolean ack();
+
+	/**
+	 * Get an actuator for a module on this controller.
+	 * 
+	 * @param address
+	 *            the module address
+	 * @return the Actuator.
+	 */
+	Actuator actuator(Address address);
 
 	/**
 	 * Generate a command instance that can be used whit this

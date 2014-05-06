@@ -7,11 +7,11 @@ import javax.usb.UsbServices;
 
 public class UsbServicesProvider {
 
-    public UsbHub retrieveUsbHub() throws UsbException {
-        return getUsbServices().getRootUsbHub();
-    }
+	public UsbHub retrieveUsbHub() throws UsbException {
+		return getUsbServices().getRootUsbHub();
+	}
 
-    protected UsbServices getUsbServices() throws UsbException {
-        return UsbHostManager.getUsbServices();
-    }
+	protected UsbServices getUsbServices() throws UsbException {
+		return UsbHostManager.getUsbServices();
+	}
 }

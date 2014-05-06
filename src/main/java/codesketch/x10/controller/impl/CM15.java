@@ -20,37 +20,37 @@ public class CM15 extends AbstractUsbX10Controller {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CM15.class);
 
-    public CM15(Device device) {
-        super(device);
-        // this.verifyAndSetTime();
-    }
+	public CM15(Device device) {
+		super(device);
+		// this.verifyAndSetTime();
+	}
 
-    @Override
-    public short vendorId() {
-        return 0x0BC7;
-    }
+	@Override
+	public short vendorId() {
+		return 0x0BC7;
+	}
 
-    @Override
-    public short productId() {
-        return 0x0001;
-    }
+	@Override
+	public short productId() {
+		return 0x0001;
+	}
 
-    @Override
+	@Override
 	public void execute(Command command) {
 		List<byte[]> payload = command.toBytePayload();
 		for (byte[] chunk : payload) {
 			this.write(chunk);
-            sleepSilently();
+			sleepSilently();
 		}
 
-    }
+	}
 
-    private void sleepSilently() {
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-        }
-    }
+	private void sleepSilently() {
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -64,8 +64,8 @@ public class CM15 extends AbstractUsbX10Controller {
 		return new CM15Command(function, address, dimAmount);
 	}
 
-    @Override
-    public boolean ack() {
+	@Override
+	public boolean ack() {
 		try {
 			byte[] bytes = this.read(1);
 			if (bytes.length < 1) {
@@ -75,17 +75,17 @@ public class CM15 extends AbstractUsbX10Controller {
 		} catch (Exception e) {
 			return false;
 		}
-    }
+	}
 
-    @Override
-    protected byte readEndpoint() {
+	@Override
+	protected byte readEndpoint() {
 		return CM15Command.Protocol.READ_ENDPOINT.code();
-    }
+	}
 
-    @Override
-    protected byte writeEndpoint() {
+	@Override
+	protected byte writeEndpoint() {
 		return CM15Command.Protocol.WRITE_ENDPOINT.code();
-    }
+	}
 
 	private void verifyAndSetTime() {
 		try {
@@ -100,12 +100,12 @@ public class CM15 extends AbstractUsbX10Controller {
 				sequence[3] = (byte) (calendar.get(Calendar.HOUR) >> 1);
 				sequence[4] = (byte) calendar.get(Calendar.DAY_OF_YEAR);
 				sequence[5] = (byte) (1 << calendar.get(Calendar.DAY_OF_WEEK));
-				if((calendar.get(Calendar.DAY_OF_WEEK) & 0x100) == 1) {
+				if ((calendar.get(Calendar.DAY_OF_WEEK) & 0x100) == 1) {
 					sequence[5] |= 0x80;
 				}
 				sequence[6] = 0x60;
 				sequence[7] = 0x00;
-	
+
 				this.write(sequence);
 			}
 		} catch (Exception e) {
@@ -150,9 +150,9 @@ public class CM15 extends AbstractUsbX10Controller {
 			return Arrays.asList(Function.ALL_LIGHTS_OFF, Function.ALL_LIGHTS_ON, Function.ALL_UNITS_OFF).contains(this.function);
 		}
 
-        private boolean isDimOrBrightFunction() {
-            return Arrays.asList(Function.BRIGHT, Function.DIM).contains(this.function);
-        }
+		private boolean isDimOrBrightFunction() {
+			return Arrays.asList(Function.BRIGHT, Function.DIM).contains(this.function);
+		}
 
 		private byte[] defineSelectByteSequence(Map<String, Byte> houses, Map<String, Byte> units) {
 			byte house = (byte) (houses.get(address.getHouse()) << 4);
@@ -163,12 +163,12 @@ public class CM15 extends AbstractUsbX10Controller {
 		private byte[] defineFunctionByteSequence(Map<String, Byte> houses) {
 			byte operation = (byte) (houses.get(this.address.getHouse()) << 4);
 			operation += function.nibble();
-            if (isDimOrBrightFunction()) {
-                byte amount = (byte) (this.dimAmount * 2);
-                return new byte[] { Protocol.FUNCTION.code(), operation, amount };
-            } else {
-                return new byte[] { Protocol.FUNCTION.code(), operation };
-            }
+			if (isDimOrBrightFunction()) {
+				byte amount = (byte) (this.dimAmount * 2);
+				return new byte[] { Protocol.FUNCTION.code(), operation, amount };
+			} else {
+				return new byte[] { Protocol.FUNCTION.code(), operation };
+			}
 		}
 
 		private static enum Protocol {

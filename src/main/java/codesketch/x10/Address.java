@@ -2,39 +2,39 @@ package codesketch.x10;
 
 public class Address {
 
-    private final String house;
-    private final String unit;
-    private final Boolean valid;
+	private final String house;
+	private final String unit;
+	private final Boolean valid;
 
-    private Address(String house, String unit) {
+	private Address(String house, String unit) {
 		if (null != house) {
 			this.house = house.toUpperCase();
 		} else {
 			this.house = null;
 		}
-        this.unit = unit;
-        this.valid = null != this.house && null != this.unit;
-    }
+		this.unit = unit;
+		this.valid = null != this.house && null != this.unit;
+	}
 
-    public String getHouse() {
-        return house;
-    }
+	public String getHouse() {
+		return house;
+	}
 
-    public String getUnit() {
-        return unit;
-    }
+	public String getUnit() {
+		return unit;
+	}
 
-    public Boolean isValid() {
-        return this.valid;
-    }
+	public Boolean isValid() {
+		return this.valid;
+	}
 
-    public static Address forAll() {
-        return new Address(null, null);
-    }
+	public static Address forAll() {
+		return new Address(null, null);
+	}
 
-    public static Address forModule(String house, String unit) {
-        return new Address(house, unit);
-    }
+	public static Address forModule(String house, String unit) {
+		return new Address(house, unit);
+	}
 
 	/*
 	 * (non-Javadoc)
