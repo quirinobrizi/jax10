@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>codesketch.home.automation</groupId>
 	<artifactId>jax10</artifactId>
-	<version>0.0.3</version>
+	<version>0.0.4-SNAPSHOT</version>
 
 	<organization>
 		<name>codesketck.eu</name>
@@ -12,7 +12,7 @@
 		<connection>scm:git:https://github.com/quirinobrizi/jax10.git</connection>
 		<developerConnection>scm:git:https://github.com/quirinobrizi/jax10.git</developerConnection>
 		<url>https://github.com/quirinobrizi/jax10</url>
-	  <tag>v0.0.3</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<developers>
