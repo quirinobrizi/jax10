@@ -1,4 +1,4 @@
-package codesketch.driver.x10.bus.usb;
+package codesketch.driver.usb;
 
 import javax.usb.UsbException;
 import javax.usb.UsbHostManager;

@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package codesketch.driver.x10.bus.usb;
+package codesketch.driver.x10.usb;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,37 +30,38 @@ import org.slf4j.LoggerFactory;
 
 import codesketch.driver.Controller;
 import codesketch.driver.ControllerProvider;
-import codesketch.driver.x10.bus.BusEventListener;
-import codesketch.driver.x10.bus.Definition;
-import codesketch.driver.x10.bus.usb.exception.UsbOperationException;
+import codesketch.driver.listener.ConnectionListener;
+import codesketch.driver.usb.UsbServicesProvider;
+import codesketch.driver.x10.Module;
+import codesketch.driver.x10.usb.exception.UsbOperationException;
 
 /**
  * 
  * @author Quirino Brizi (quirino.brizi@gmail.com)
  * 
  */
-public class UsbControllerProvider implements ControllerProvider {
+public class X10UsbControllerProvider implements ControllerProvider {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UsbControllerProvider.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(X10UsbControllerProvider.class);
 
 	private final UsbServicesProvider usbServiceProvider;
 
 	/**
-	 * Create a new {@link UsbControllerProvider} instance whit default
+	 * Create a new {@link X10UsbControllerProvider} instance whit default
 	 * {@link UsbServicesProvider}
 	 */
-	public UsbControllerProvider() {
+	public X10UsbControllerProvider() {
 		this.usbServiceProvider = new UsbServicesProvider();
 	}
 
 	/**
-	 * Create a new {@link UsbControllerProvider} instance whit provided
+	 * Create a new {@link X10UsbControllerProvider} instance whit provided
 	 * {@link UsbServicesProvider}
 	 * 
 	 * @param usbServiceProvider
 	 *            a custom {@link UsbServicesProvider} implementation.
 	 */
-	public UsbControllerProvider(UsbServicesProvider usbServiceProvider) {
+	public X10UsbControllerProvider(UsbServicesProvider usbServiceProvider) {
 		this.usbServiceProvider = usbServiceProvider;
 	}
 
@@ -89,7 +90,7 @@ public class UsbControllerProvider implements ControllerProvider {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public <C extends Controller> C provideControllerBy(Definition definition) {
+	public <C extends Controller> C provideControllerBy(Module definition) {
 		return (C) this.scan(definition, definition.getType());
 	}
 
@@ -101,10 +102,10 @@ public class UsbControllerProvider implements ControllerProvider {
 	 * .x10.bus.BusEventListener)
 	 */
 	@Override
-	public void registerEventListener(BusEventListener busEventListener) {
+	public void registerEventListener(ConnectionListener busEventListener) {
 		try {
 			UsbServices usbServices = this.usbServiceProvider.getUsbServices();
-			DefaultUsbServicesListener defaultUsbServicesListener = new DefaultUsbServicesListener(busEventListener);
+			X10ServicesListener defaultUsbServicesListener = new X10ServicesListener(busEventListener);
 			usbServices.addUsbServicesListener(defaultUsbServicesListener);
 		} catch (UsbException e) {
 			String message = String.format("unable regiater requested  listener: %s", busEventListener);
@@ -113,7 +114,7 @@ public class UsbControllerProvider implements ControllerProvider {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <C extends Controller> C scan(Definition definition, Class<C> type) {
+	private <C extends Controller> C scan(Module definition, Class<C> type) {
 		try {
 			UsbHub retrieveUsbHub = this.usbServiceProvider.retrieveUsbHub();
 			UsbDevice usbDevice = this.findDevice(retrieveUsbHub, definition);
@@ -125,15 +126,15 @@ public class UsbControllerProvider implements ControllerProvider {
 
 	private List<Controller> retrieveKnownDevices() throws UsbException {
 		List<Controller> controllers = new ArrayList<Controller>();
-		Definition[] knownDevices = Definition.values();
+		Module[] knownDevices = Module.values();
 		UsbHub retrieveUsbHub = this.usbServiceProvider.retrieveUsbHub();
-		for (Definition knownDevice : knownDevices) {
+		for (Module knownDevice : knownDevices) {
 			LOGGER.info("inspecting USB bus for device {}", knownDevice);
 			try {
 				UsbDevice device = this.findDevice(retrieveUsbHub, knownDevice);
 				if (null != device) {
 					LOGGER.debug("found connected device for {}", knownDevice);
-					controllers.add(Definition.buildControllerFor(device));
+					controllers.add(Module.buildControllerFor(device));
 				}
 			} catch (Exception e) {
 				LOGGER.warn("exception looking for device {} message {}", knownDevice, e.getMessage());
@@ -143,7 +144,7 @@ public class UsbControllerProvider implements ControllerProvider {
 	}
 
 	@SuppressWarnings("unchecked")
-	private UsbDevice findDevice(UsbHub usbHub, Definition definition) throws UsbException {
+	private UsbDevice findDevice(UsbHub usbHub, Module definition) throws UsbException {
 		List<UsbDevice> attachedUsbDevices = usbHub.getAttachedUsbDevices();
 		for (UsbDevice usbDevice : attachedUsbDevices) {
 			UsbDeviceDescriptor desc = usbDevice.getUsbDeviceDescriptor();

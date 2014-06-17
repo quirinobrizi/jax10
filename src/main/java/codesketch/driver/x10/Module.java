@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package codesketch.driver.x10.bus;
+package codesketch.driver.x10;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -22,15 +22,16 @@ import javax.usb.UsbDevice;
 import javax.usb.UsbDeviceDescriptor;
 
 import codesketch.driver.Controller;
-import codesketch.driver.x10.bus.usb.exception.UsbOperationException;
 import codesketch.driver.x10.controller.X10Controller;
+import codesketch.driver.x10.usb.exception.UsbOperationException;
 
 /**
  * 
  * @author Quirino Brizi (quirino.brizi@gmail.com)
  * 
+ *         TODO: QB refact to be generic and be placed at top level for package.
  */
-public enum Definition {
+public enum Module {
 
 	CM15((short) 0x0BC7, (short) 0x0001, codesketch.driver.x10.controller.impl.CM15.class);
 
@@ -38,7 +39,7 @@ public enum Definition {
 	private final short productId;
 	private final Class<? extends X10Controller> type;
 
-	private Definition(short vendorId, short productId, Class<? extends X10Controller> type) {
+	private Module(short vendorId, short productId, Class<? extends X10Controller> type) {
 		this.vendorId = vendorId;
 		this.productId = productId;
 		this.type = type;
@@ -106,8 +107,8 @@ public enum Definition {
 	 */
 	private <C extends Controller> C buildControllerForDevice(Class<C> type, UsbDevice usbDevice) throws NoSuchMethodException,
 	        InstantiationException, IllegalAccessException, InvocationTargetException {
-		codesketch.driver.x10.bus.usb.UsbDevice device = new codesketch.driver.x10.bus.usb.UsbDevice(usbDevice);
-		Constructor<C> constructor = type.getConstructor(codesketch.driver.x10.bus.Device.class);
+		codesketch.driver.usb.UsbDevice device = new codesketch.driver.usb.UsbDevice(usbDevice);
+		Constructor<C> constructor = type.getConstructor(codesketch.driver.Device.class);
 		return constructor.newInstance(device);
 	}
 
@@ -123,8 +124,8 @@ public enum Definition {
 	 *         definition.
 	 */
 	public static boolean isValidDevice(short vendorId, short productId) {
-		Definition[] definitions = values();
-		for (Definition definition : definitions) {
+		Module[] definitions = values();
+		for (Module definition : definitions) {
 			return definition.isBasedOn(vendorId, productId);
 		}
 		return false;
@@ -132,8 +133,8 @@ public enum Definition {
 
 	public static <C extends Controller> C buildControllerFor(UsbDevice usbDevice) {
 		UsbDeviceDescriptor usbDeviceDescriptor = usbDevice.getUsbDeviceDescriptor();
-		Definition[] definitions = values();
-		for (Definition definition : definitions) {
+		Module[] definitions = values();
+		for (Module definition : definitions) {
 			if (definition.isBasedOn(usbDeviceDescriptor.idVendor(), usbDeviceDescriptor.idProduct())) {
 				return definition.buildController(usbDevice);
 			}

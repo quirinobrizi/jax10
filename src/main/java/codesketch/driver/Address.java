@@ -1,4 +1,4 @@
-package codesketch.driver.x10;
+package codesketch.driver;
 
 public class Address {
 

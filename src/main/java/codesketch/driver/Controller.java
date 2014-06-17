@@ -15,10 +15,8 @@
  */
 package codesketch.driver;
 
-import codesketch.driver.x10.Address;
-import codesketch.driver.x10.Command;
+import codesketch.driver.listener.EventListener;
 import codesketch.driver.x10.Function;
-import codesketch.driver.x10.actuator.Actuator;
 import codesketch.driver.x10.controller.X10Controller;
 
 /**
@@ -95,4 +93,12 @@ public interface Controller {
 	 * @return a command
 	 */
 	Command command(Function function, Address address, Integer dimAmount);
+
+	/**
+	 * Attach an event listener to the device controlled by this controller.
+	 * 
+	 * @param listener
+	 *            the {@link EventListener} implementation.
+	 */
+	void addListener(EventListener listener);
 }

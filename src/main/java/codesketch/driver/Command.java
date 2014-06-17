@@ -1,7 +1,7 @@
 /**
  * 
  */
-package codesketch.driver.x10;
+package codesketch.driver;
 
 import java.util.List;
 

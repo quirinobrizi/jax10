@@ -1,13 +1,13 @@
 package codesketch.driver.x10.actuator;
 
-import codesketch.driver.x10.Address;
-import codesketch.driver.x10.Command;
+import codesketch.driver.Address;
+import codesketch.driver.Command;
 import codesketch.driver.x10.Function;
 import codesketch.driver.x10.controller.X10Controller;
 
-public class X10ActuatorDefault extends AbstractActuator {
+public class DefaultX10Actuator extends AbstractActuator {
 
-	public X10ActuatorDefault(Address address, X10Controller controller) {
+	public DefaultX10Actuator(Address address, X10Controller controller) {
 		super(address, controller);
 	}
 
