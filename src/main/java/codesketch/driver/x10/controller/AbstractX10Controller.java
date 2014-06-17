@@ -1,9 +1,10 @@
 package codesketch.driver.x10.controller;
 
-import codesketch.driver.x10.Address;
-import codesketch.driver.x10.actuator.Actuator;
-import codesketch.driver.x10.actuator.X10ActuatorDefault;
-import codesketch.driver.x10.bus.Device;
+import codesketch.driver.Actuator;
+import codesketch.driver.Address;
+import codesketch.driver.Device;
+import codesketch.driver.listener.EventListener;
+import codesketch.driver.x10.actuator.DefaultX10Actuator;
 
 public abstract class AbstractX10Controller implements X10Controller {
 
@@ -15,10 +16,15 @@ public abstract class AbstractX10Controller implements X10Controller {
 
 	@Override
 	public Actuator actuator(Address address) {
-		return new X10ActuatorDefault(address, this);
+		return new DefaultX10Actuator(address, this);
 	}
 
 	protected Device getDevice() {
 		return device;
+	}
+
+	@Override
+	public void addListener(EventListener eventListener) {
+		this.device.attachListener(eventListener);
 	}
 }

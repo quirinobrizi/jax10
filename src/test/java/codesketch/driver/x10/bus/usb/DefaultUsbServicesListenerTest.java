@@ -33,9 +33,10 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import codesketch.driver.Controller;
-import codesketch.driver.x10.bus.BusEventListener;
-import codesketch.driver.x10.bus.Definition;
+import codesketch.driver.listener.ConnectionListener;
+import codesketch.driver.x10.Module;
 import codesketch.driver.x10.controller.X10Controller;
+import codesketch.driver.x10.usb.X10ServicesListener;
 
 /**
  * @author Quirino Brizi (quirino.brizi@gmail.com)
@@ -45,7 +46,7 @@ import codesketch.driver.x10.controller.X10Controller;
 public class DefaultUsbServicesListenerTest {
 
 	@Mock
-	private BusEventListener busEventListener;
+	private ConnectionListener busEventListener;
 	@Captor
 	private ArgumentCaptor<Controller> deviceCaptor;
 
@@ -56,18 +57,18 @@ public class DefaultUsbServicesListenerTest {
 	@Mock
 	private UsbDeviceDescriptor usbDeviceDescriptor;
 
-	private DefaultUsbServicesListener testObj;
+	private X10ServicesListener testObj;
 
 	@Before
 	public void beforeMethod() {
-		this.testObj = new DefaultUsbServicesListener(this.busEventListener);
+		this.testObj = new X10ServicesListener(this.busEventListener);
 		when(this.event.getUsbDevice()).thenReturn(usbDevice);
 		when(this.usbDevice.getUsbDeviceDescriptor()).thenReturn(usbDeviceDescriptor);
 	}
 
 	/**
 	 * Test method for
-	 * {@link codesketch.driver.x10.bus.usb.DefaultUsbServicesListener#usbDeviceAttached(javax.usb.event.UsbServicesEvent)}
+	 * {@link codesketch.driver.x10.usb.X10ServicesListener#usbDeviceAttached(javax.usb.event.UsbServicesEvent)}
 	 * .
 	 */
 	@Test
@@ -80,14 +81,14 @@ public class DefaultUsbServicesListenerTest {
 
 	/**
 	 * Test method for
-	 * {@link codesketch.driver.x10.bus.usb.DefaultUsbServicesListener#usbDeviceAttached(javax.usb.event.UsbServicesEvent)}
+	 * {@link codesketch.driver.x10.usb.X10ServicesListener#usbDeviceAttached(javax.usb.event.UsbServicesEvent)}
 	 * and propagated device is not null and built accordingly to received event
 	 * .
 	 */
 	@Test
 	public void testUsbDeviceAttached_deviceIsBuilt() {
-		when(this.usbDeviceDescriptor.idVendor()).thenReturn(Definition.CM15.getVendorId());
-		when(this.usbDeviceDescriptor.idProduct()).thenReturn(Definition.CM15.getProductId());
+		when(this.usbDeviceDescriptor.idVendor()).thenReturn(Module.CM15.getVendorId());
+		when(this.usbDeviceDescriptor.idProduct()).thenReturn(Module.CM15.getProductId());
 		// act
 		this.testObj.usbDeviceAttached(event);
 		// verify
@@ -98,7 +99,7 @@ public class DefaultUsbServicesListenerTest {
 
 	/**
 	 * Test method for
-	 * {@link codesketch.driver.x10.bus.usb.DefaultUsbServicesListener#usbDeviceDetached(javax.usb.event.UsbServicesEvent)}
+	 * {@link codesketch.driver.x10.usb.X10ServicesListener#usbDeviceDetached(javax.usb.event.UsbServicesEvent)}
 	 * .
 	 */
 	@Test
@@ -111,13 +112,13 @@ public class DefaultUsbServicesListenerTest {
 
 	/**
 	 * Test method for
-	 * {@link codesketch.driver.x10.bus.usb.DefaultUsbServicesListener#usbDeviceDetached(javax.usb.event.UsbServicesEvent)}
+	 * {@link codesketch.driver.x10.usb.X10ServicesListener#usbDeviceDetached(javax.usb.event.UsbServicesEvent)}
 	 * .
 	 */
 	@Test
 	public void testUsbDeviceDetached_deviceIsBuilt() {
-		when(this.usbDeviceDescriptor.idVendor()).thenReturn(Definition.CM15.getVendorId());
-		when(this.usbDeviceDescriptor.idProduct()).thenReturn(Definition.CM15.getProductId());
+		when(this.usbDeviceDescriptor.idVendor()).thenReturn(Module.CM15.getVendorId());
+		when(this.usbDeviceDescriptor.idProduct()).thenReturn(Module.CM15.getProductId());
 		// act
 		this.testObj.usbDeviceDetached(event);
 		// verify

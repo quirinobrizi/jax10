@@ -1,6 +1,7 @@
 package codesketch.driver.x10.actuator;
 
-import codesketch.driver.x10.Address;
+import codesketch.driver.Actuator;
+import codesketch.driver.Address;
 import codesketch.driver.x10.controller.X10Controller;
 
 public abstract class AbstractActuator implements Actuator {

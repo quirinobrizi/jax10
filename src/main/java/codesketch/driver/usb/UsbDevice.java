@@ -1,4 +1,4 @@
-package codesketch.driver.x10.bus.usb;
+package codesketch.driver.usb;
 
 import javax.usb.UsbConfiguration;
 import javax.usb.UsbEndpoint;
@@ -6,13 +6,16 @@ import javax.usb.UsbException;
 import javax.usb.UsbInterface;
 import javax.usb.UsbIrp;
 import javax.usb.UsbPipe;
+import javax.usb.event.UsbDeviceListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import codesketch.driver.Device;
+import codesketch.driver.listener.EventListener;
 import codesketch.driver.x10.Utils;
-import codesketch.driver.x10.bus.Device;
-import codesketch.driver.x10.bus.usb.exception.UsbOperationException;
+import codesketch.driver.x10.usb.X10EventListener;
+import codesketch.driver.x10.usb.exception.UsbOperationException;
 
 public class UsbDevice implements Device {
 
@@ -144,6 +147,12 @@ public class UsbDevice implements Device {
 		irp.setLength(sequence.length);
 		irp.setAcceptShortPacket(true);
 		return irp;
+	}
+
+	@Override
+	public void attachListener(EventListener eventListener) {
+		UsbDeviceListener listener = new X10EventListener(eventListener);
+		this.device.addUsbDeviceListener(listener);
 	}
 
 }

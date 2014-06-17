@@ -3,8 +3,8 @@ package codesketch.driver.x10.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import codesketch.driver.Device;
 import codesketch.driver.x10.Utils;
-import codesketch.driver.x10.bus.Device;
 
 public abstract class AbstractUsbX10Controller extends AbstractX10Controller {
 

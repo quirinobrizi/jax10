@@ -1,4 +1,4 @@
-package codesketch.driver.x10.actuator;
+package codesketch.driver;
 
 public interface Actuator {
 

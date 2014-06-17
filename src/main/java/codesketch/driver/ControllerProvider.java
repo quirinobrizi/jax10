@@ -2,8 +2,8 @@ package codesketch.driver;
 
 import java.util.List;
 
-import codesketch.driver.x10.bus.BusEventListener;
-import codesketch.driver.x10.bus.Definition;
+import codesketch.driver.listener.ConnectionListener;
+import codesketch.driver.x10.Module;
 
 public interface ControllerProvider {
 
@@ -19,11 +19,11 @@ public interface ControllerProvider {
 	 * Scan the connected bus for the requested device definition, and create a
 	 * controller if a device is found.
 	 * 
-	 * @param definition
+	 * @param module
 	 *            search criteria for the device to lookup
 	 * @return a controller for the device if found.
 	 */
-	<C extends Controller> C provideControllerBy(Definition definition);
+	<C extends Controller> C provideControllerBy(Module module);
 
 	/**
 	 * Register a listener for event that may occur on the connected bus.
@@ -31,5 +31,5 @@ public interface ControllerProvider {
 	 * @param busEventListener
 	 *            the event listener implementation
 	 */
-	public void registerEventListener(BusEventListener busEventListener);
+	public void registerEventListener(ConnectionListener busEventListener);
 }

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package codesketch.driver.x10.bus.usb.exception;
+package codesketch.driver.x10.usb.exception;
 
 /**
  * @author quirino

@@ -14,33 +14,35 @@
  * limitations under the License.
  *
  */
-package codesketch.driver.x10.bus;
+package codesketch.driver.listener;
 
 import codesketch.driver.Controller;
 
 /**
- * Define the archetype of a bus event listener
+ * Define the archetype of a devive event listener
  * 
  * @author Quirino Brizi (quirino.brizi@gmail.com)
  * 
  */
-public interface BusEventListener {
+public interface EventListener {
 
 	/**
-	 * Triggered when a device is connected to the bus.
+	 * Callback method, invoked when a device is disconnected from the active
+	 * bus.
 	 * 
 	 * @param controller
-	 *            the controller that allows to execute actions on the connected
-	 *            device.
+	 *            the device {@link Controller}.
 	 */
-	public void onConnect(Controller controller);
+	void onDisconnect(Controller controller);
 
 	/**
-	 * Triggered when a device is disconnected from the bus
+	 * Callback method, invoked when an event is triggered on the active bus.
 	 * 
 	 * @param controller
-	 *            the controller that allows to execute actions on the
-	 *            disconnected device.
+	 *            the device {@link Controller}
+	 * @param event
+	 *            the fired {@link Event}.
 	 */
-	public void onDisconnect(Controller controller);
+	void onEvent(Controller controller, Event event);
+	 
 }

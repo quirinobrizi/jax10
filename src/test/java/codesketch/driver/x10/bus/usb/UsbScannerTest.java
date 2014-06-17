@@ -24,12 +24,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import codesketch.driver.x10.Address;
-import codesketch.driver.x10.actuator.Actuator;
-import codesketch.driver.x10.bus.Definition;
-import codesketch.driver.x10.bus.usb.UsbControllerProvider;
-import codesketch.driver.x10.bus.usb.UsbServicesProvider;
+import codesketch.driver.Actuator;
+import codesketch.driver.Address;
+import codesketch.driver.usb.UsbServicesProvider;
+import codesketch.driver.x10.Module;
 import codesketch.driver.x10.controller.X10Controller;
+import codesketch.driver.x10.usb.X10UsbControllerProvider;
 
 /**
  * @author quirino.brizi (quirino.brizi@gmail.com)
@@ -41,19 +41,19 @@ public class UsbScannerTest {
 	@Mock
 	private UsbServicesProvider usbServicesProvider;
 
-	private UsbControllerProvider testObj;
+	private X10UsbControllerProvider testObj;
 
 	@Before
 	public void setUp() {
-		this.testObj = new UsbControllerProvider(this.usbServicesProvider);
+		this.testObj = new X10UsbControllerProvider(this.usbServicesProvider);
 	}
 
 	@Ignore
 	@Test
 	public void test() throws Exception {
 
-		UsbControllerProvider provider = new UsbControllerProvider();
-		X10Controller x10Controller = provider.provideControllerBy(Definition.CM15);
+		X10UsbControllerProvider provider = new X10UsbControllerProvider();
+		X10Controller x10Controller = provider.provideControllerBy(Module.CM15);
 		// X10Controller x10Controller = controllers.get(0);
 		Address address = Address.forModule("A", "2");
 		Actuator actuator = x10Controller.actuator(address);
@@ -63,7 +63,7 @@ public class UsbScannerTest {
 
 	@Test
 	public void testProvideControllerFromDefinition() throws UsbException {
-		Definition expectedControllerDefinition = Definition.CM15;
+		Module expectedControllerDefinition = Module.CM15;
 		// setup
 		UsbServices usbServices = mock(UsbServices.class);
 		UsbHub usbHub = mock(UsbHub.class);

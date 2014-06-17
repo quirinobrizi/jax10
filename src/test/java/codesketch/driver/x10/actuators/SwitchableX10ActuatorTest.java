@@ -12,9 +12,9 @@ import static org.mockito.Mockito.when;
 
 import org.junit.Test;
 
-import codesketch.driver.x10.Address;
-import codesketch.driver.x10.actuator.X10ActuatorDefault;
-import codesketch.driver.x10.bus.Device;
+import codesketch.driver.Address;
+import codesketch.driver.Device;
+import codesketch.driver.x10.actuator.DefaultX10Actuator;
 import codesketch.driver.x10.controller.impl.CM15;
 
 public class SwitchableX10ActuatorTest {
@@ -30,7 +30,7 @@ public class SwitchableX10ActuatorTest {
 		CM15 controller = new CM15(device);
 		Address address = Address.forModule("A", "1");
 
-		X10ActuatorDefault testObj = new X10ActuatorDefault(address, controller);
+		DefaultX10Actuator testObj = new DefaultX10Actuator(address, controller);
 		Boolean success = testObj.on();
 
 		verify(device, times(3)).open();
@@ -51,7 +51,7 @@ public class SwitchableX10ActuatorTest {
 		CM15 controller = new CM15(device);
 		Address address = Address.forModule("A", "1");
 
-		X10ActuatorDefault testObj = new X10ActuatorDefault(address, controller);
+		DefaultX10Actuator testObj = new DefaultX10Actuator(address, controller);
 		Boolean success = testObj.off();
 
 		verify(device, times(3)).open();

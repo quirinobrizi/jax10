@@ -30,10 +30,10 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import codesketch.driver.x10.bus.BusEventListener;
-import codesketch.driver.x10.bus.usb.UsbControllerProvider;
-import codesketch.driver.x10.bus.usb.UsbServicesProvider;
-import codesketch.driver.x10.bus.usb.exception.UsbOperationException;
+import codesketch.driver.listener.ConnectionListener;
+import codesketch.driver.usb.UsbServicesProvider;
+import codesketch.driver.x10.usb.X10UsbControllerProvider;
+import codesketch.driver.x10.usb.exception.UsbOperationException;
 
 /**
  * @author Quirino Brizi (quirino.brizi@gmail.com)
@@ -45,16 +45,16 @@ public class UsbControllerProviderTest {
 	@Mock
 	private UsbServicesProvider usbServicesProvider;
 
-	private UsbControllerProvider testObj;
+	private X10UsbControllerProvider testObj;
 
 	@Before
 	public void beforeMethod() {
-		this.testObj = new UsbControllerProvider(this.usbServicesProvider);
+		this.testObj = new X10UsbControllerProvider(this.usbServicesProvider);
 	}
 
 	/**
 	 * Test method for
-	 * {@link codesketch.driver.x10.bus.usb.UsbControllerProvider#registerEventListener(codesketch.driver.x10.bus.BusEventListener)}
+	 * {@link codesketch.driver.x10.usb.X10UsbControllerProvider#registerEventListener(codesketch.driver.listener.ConnectionListener)}
 	 * .
 	 * 
 	 * @throws UsbException
@@ -64,7 +64,7 @@ public class UsbControllerProviderTest {
 		// setup
 		UsbServices usbServices = mock(UsbServices.class);
 		when(this.usbServicesProvider.getUsbServices()).thenReturn(usbServices);
-		BusEventListener busEventListener = mock(BusEventListener.class);
+		ConnectionListener busEventListener = mock(ConnectionListener.class);
 		// act
 		this.testObj.registerEventListener(busEventListener);
 		// verify
@@ -74,7 +74,7 @@ public class UsbControllerProviderTest {
 
 	/**
 	 * Test method for
-	 * {@link codesketch.driver.x10.bus.usb.UsbControllerProvider#registerEventListener(codesketch.driver.x10.bus.BusEventListener)}
+	 * {@link codesketch.driver.x10.usb.X10UsbControllerProvider#registerEventListener(codesketch.driver.listener.ConnectionListener)}
 	 * throw {@link UsbOperationException}.
 	 * 
 	 * @throws UsbException
@@ -84,7 +84,7 @@ public class UsbControllerProviderTest {
 	public void testRegisterEventListener_throwsUsbOperationException() throws UsbException {
 		// setup
 		when(this.usbServicesProvider.getUsbServices()).thenThrow(UsbException.class);
-		BusEventListener busEventListener = mock(BusEventListener.class);
+		ConnectionListener busEventListener = mock(ConnectionListener.class);
 		// act
 		this.testObj.registerEventListener(busEventListener);
 	}

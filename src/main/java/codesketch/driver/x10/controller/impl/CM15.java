@@ -2,7 +2,6 @@ package codesketch.driver.x10.controller.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,10 +11,10 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import codesketch.driver.x10.Address;
-import codesketch.driver.x10.Command;
+import codesketch.driver.Address;
+import codesketch.driver.Command;
+import codesketch.driver.Device;
 import codesketch.driver.x10.Function;
-import codesketch.driver.x10.bus.Device;
 import codesketch.driver.x10.controller.AbstractUsbX10Controller;
 
 public class CM15 extends AbstractUsbX10Controller {
@@ -24,7 +23,6 @@ public class CM15 extends AbstractUsbX10Controller {
 
 	public CM15(Device device) {
 		super(device);
-		// this.verifyAndSetTime();
 	}
 
 	@Override
@@ -89,31 +87,32 @@ public class CM15 extends AbstractUsbX10Controller {
 		return CM15Command.Protocol.WRITE_ENDPOINT.code();
 	}
 
-	private void verifyAndSetTime() {
-		try {
-			byte[] response = this.read(1);
-			if (response[0] == 0xA5) {
-				LOGGER.info("setting controller time");
-				Calendar calendar = Calendar.getInstance();
-				byte[] sequence = new byte[8];
-				sequence[0] = (byte) 0x9b;
-				sequence[1] = (byte) calendar.get(Calendar.SECOND);
-				sequence[2] = (byte) (calendar.get(Calendar.MINUTE) + 60 * (calendar.get(Calendar.HOUR) & 1));
-				sequence[3] = (byte) (calendar.get(Calendar.HOUR) >> 1);
-				sequence[4] = (byte) calendar.get(Calendar.DAY_OF_YEAR);
-				sequence[5] = (byte) (1 << calendar.get(Calendar.DAY_OF_WEEK));
-				if ((calendar.get(Calendar.DAY_OF_WEEK) & 0x100) == 1) {
-					sequence[5] |= 0x80;
-				}
-				sequence[6] = 0x60;
-				sequence[7] = 0x00;
-
-				this.write(sequence);
-			}
-		} catch (Exception e) {
-			LOGGER.info("unable to set or verify controller time");
-		}
-	}
+	// private void verifyAndSetTime() {
+	// try {
+	// byte[] response = this.read(1);
+	// if (response[0] == 0xA5) {
+	// LOGGER.info("setting controller time");
+	// Calendar calendar = Calendar.getInstance();
+	// byte[] sequence = new byte[8];
+	// sequence[0] = (byte) 0x9b;
+	// sequence[1] = (byte) calendar.get(Calendar.SECOND);
+	// sequence[2] = (byte) (calendar.get(Calendar.MINUTE) + 60 *
+	// (calendar.get(Calendar.HOUR) & 1));
+	// sequence[3] = (byte) (calendar.get(Calendar.HOUR) >> 1);
+	// sequence[4] = (byte) calendar.get(Calendar.DAY_OF_YEAR);
+	// sequence[5] = (byte) (1 << calendar.get(Calendar.DAY_OF_WEEK));
+	// if ((calendar.get(Calendar.DAY_OF_WEEK) & 0x100) == 1) {
+	// sequence[5] |= 0x80;
+	// }
+	// sequence[6] = 0x60;
+	// sequence[7] = 0x00;
+	//
+	// this.write(sequence);
+	// }
+	// } catch (Exception e) {
+	// LOGGER.info("unable to set or verify controller time");
+	// }
+	// }
 
 	public static final class CM15Command implements Command {
 
