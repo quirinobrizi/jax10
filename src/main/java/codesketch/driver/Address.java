@@ -40,6 +40,18 @@ public class Address {
         return new Address(house, unit);
     }
 
+    /**
+     * Create a new address instance.
+     * 
+     * @param address
+     *            the address as string that identifies house and unit as
+     *            [house][unit] (i.e. A1).
+     * @return the new {@link Address}
+     */
+    public static Address forModule(String address) {
+        return new Address(address.substring(0, 1), address.substring(1));
+    }
+
     /*
      * (non-Javadoc)
      * 
