@@ -54,7 +54,7 @@ public class CM15 extends AbstractUsbX10Controller {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * codesketch.x10.controller.X10Controller#command(codesketch.x10.Function,
 	 * codesketch.x10.Address, java.lang.Integer)
@@ -68,11 +68,13 @@ public class CM15 extends AbstractUsbX10Controller {
 	public boolean ack() {
 		try {
 			byte[] bytes = this.read(1);
+			LOGGER.info("ACK command sent received response: {}", bytes);
 			if (bytes.length < 1) {
 				return false;
 			}
 			return (bytes[0] == CM15Command.Protocol.ACK.code());
 		} catch (Exception e) {
+			LOGGER.warn("Exception sending ack command to device", e);
 			return false;
 		}
 	}
@@ -128,7 +130,7 @@ public class CM15 extends AbstractUsbX10Controller {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see codesketch.x10.Command#toBytePayload()
 		 */
 		@Override
@@ -232,7 +234,7 @@ public class CM15 extends AbstractUsbX10Controller {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -244,7 +246,7 @@ public class CM15 extends AbstractUsbX10Controller {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -265,7 +267,7 @@ public class CM15 extends AbstractUsbX10Controller {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
