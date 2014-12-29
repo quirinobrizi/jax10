@@ -37,10 +37,6 @@ public class CM15 extends AbstractUsbX10Controller {
 		for (byte[] chunk : payload) {
 			this.write(chunk);
 			sleepSilently();
-			if (!ack()) {
-				LOGGER.warn("ack not received from interface, stop transmission");
-				return;
-			}
 		}
 
 	}
