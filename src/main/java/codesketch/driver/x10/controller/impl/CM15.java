@@ -72,6 +72,7 @@ public class CM15 extends AbstractUsbX10Controller {
 			if (bytes.length < 1) {
 				return false;
 			}
+			LOGGER.info("ACK response first byte: {}", bytes[0]);
 			return (bytes[0] == CM15Command.Protocol.ACK.code());
 		} catch (Exception e) {
 			LOGGER.warn("Exception sending ack command to device", e);
