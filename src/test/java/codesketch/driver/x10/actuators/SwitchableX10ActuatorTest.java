@@ -60,5 +60,4 @@ public class SwitchableX10ActuatorTest {
 		verify(device).write(anyByte(), eq(new byte[] { 0x06, 0x63 }));
 		assertTrue(success);
 	}
-
 }

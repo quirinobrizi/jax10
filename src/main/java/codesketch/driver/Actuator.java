@@ -13,4 +13,6 @@ public interface Actuator {
 	Boolean allLightsOff();
 
 	Boolean allUnitsOff();
+
+    String status();
 }

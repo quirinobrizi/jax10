@@ -4,6 +4,7 @@ import codesketch.driver.Address;
 import codesketch.driver.Command;
 import codesketch.driver.x10.Function;
 import codesketch.driver.x10.controller.X10Controller;
+import codesketch.driver.x10.Utils;
 
 public class DefaultX10Actuator extends AbstractActuator {
 
@@ -29,7 +30,7 @@ public class DefaultX10Actuator extends AbstractActuator {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see codesketch.x10.actuator.Actuator#dim(int)
 	 */
 	@Override
@@ -42,7 +43,7 @@ public class DefaultX10Actuator extends AbstractActuator {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see codesketch.x10.actuator.Actuator#allLightsOn()
 	 */
 	@Override
@@ -55,7 +56,7 @@ public class DefaultX10Actuator extends AbstractActuator {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see codesketch.x10.actuator.Actuator#allLightsOff()
 	 */
 	@Override
@@ -68,7 +69,7 @@ public class DefaultX10Actuator extends AbstractActuator {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see codesketch.x10.actuator.Actuator#allUnitsOn()
 	 */
 	@Override
@@ -77,6 +78,20 @@ public class DefaultX10Actuator extends AbstractActuator {
 		Command command = controller.command(Function.ALL_UNITS_OFF, getAddress(), null);
 		controller.execute(command);
 		return controller.ack();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see codesketch.x10.actuator.Actuator#allUnitsOn()
+	 */
+	@Override
+	public String status() {
+		X10Controller controller = getController();
+		Command command = controller.command(Function.STATREQ, getAddress(), null);
+		controller.execute(command);
+		byte[] bytes = controller.read(16);
+		return Utils.formatHexToString(bytes);
 	}
 
 }

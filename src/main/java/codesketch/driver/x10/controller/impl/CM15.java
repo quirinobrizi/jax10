@@ -16,6 +16,7 @@ import codesketch.driver.Command;
 import codesketch.driver.Device;
 import codesketch.driver.x10.Function;
 import codesketch.driver.x10.controller.AbstractUsbX10Controller;
+import codesketch.driver.x10.Utils;
 
 public class CM15 extends AbstractUsbX10Controller {
 
@@ -68,7 +69,7 @@ public class CM15 extends AbstractUsbX10Controller {
 	public boolean ack() {
 		try {
 			byte[] bytes = this.read(1);
-			LOGGER.info("ACK command sent received response: {}", bytes);
+			LOGGER.info("ACK command sent received response: {}", Utils.formatHexToString(bytes));
 			if (bytes.length < 1) {
 				return false;
 			}

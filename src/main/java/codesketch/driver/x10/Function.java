@@ -2,9 +2,9 @@ package codesketch.driver.x10;
 
 /**
  * Defines the protocol functions.
- * 
+ *
  * @author quirino
- * 
+ *
  */
 public enum Function {
 
