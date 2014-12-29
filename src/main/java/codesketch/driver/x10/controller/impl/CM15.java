@@ -1,22 +1,17 @@
 package codesketch.driver.x10.controller.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import codesketch.driver.Address;
+import codesketch.driver.Command;
+import codesketch.driver.Device;
+import codesketch.driver.x10.Function;
+import codesketch.driver.x10.Utils;
+import codesketch.driver.x10.controller.AbstractUsbX10Controller;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import codesketch.driver.Address;
-import codesketch.driver.Command;
-import codesketch.driver.Device;
-import codesketch.driver.x10.Function;
-import codesketch.driver.x10.controller.AbstractUsbX10Controller;
-import codesketch.driver.x10.Utils;
+import java.util.*;
 
 public class CM15 extends AbstractUsbX10Controller {
 
@@ -42,6 +37,10 @@ public class CM15 extends AbstractUsbX10Controller {
 		for (byte[] chunk : payload) {
 			this.write(chunk);
 			sleepSilently();
+			if (!ack()) {
+				LOGGER.warn("ack not received from interface, stop transmission");
+				return;
+			}
 		}
 
 	}
