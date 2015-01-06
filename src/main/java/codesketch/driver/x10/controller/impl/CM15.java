@@ -32,13 +32,15 @@ public class CM15 extends AbstractUsbX10Controller {
 	}
 
 	@Override
-	public void execute(Command command) {
+	public boolean execute(Command command) {
 		List<byte[]> payload = command.toBytePayload();
 		for (byte[] chunk : payload) {
 			this.write(chunk);
-			sleepSilently();
+			if(!this.ack()) {
+				return false;
+			}
 		}
-
+		return true;
 	}
 
 	private void sleepSilently() {
@@ -138,6 +140,11 @@ public class CM15 extends AbstractUsbX10Controller {
 					payload.add(this.defineSelectByteSequence(getHouseEncodingMap(), getUnitEncodingMap()));
 				}
 				payload.add(this.defineFunctionByteSequence(getHouseEncodingMap()));
+			} else {
+				// create payload for address-less commands.
+				if(this.isStatusFunction()) {
+					payload.add(new byte[] { this.function.nibble() });
+				}
 			}
 			return payload;
 		}
@@ -148,6 +155,10 @@ public class CM15 extends AbstractUsbX10Controller {
 
 		private boolean isAGroupFunction() {
 			return Arrays.asList(Function.ALL_LIGHTS_OFF, Function.ALL_LIGHTS_ON, Function.ALL_UNITS_OFF).contains(this.function);
+		}
+
+		private boolean isStatusFunction() {
+			return Function.STATUS.equals(this.function);
 		}
 
 		private boolean isDimOrBrightFunction() {

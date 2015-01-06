@@ -1,10 +1,8 @@
 package codesketch.driver.x10.controller;
 
+import codesketch.driver.Device;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import codesketch.driver.Device;
-import codesketch.driver.x10.Utils;
 
 public abstract class AbstractUsbX10Controller extends AbstractX10Controller {
 
@@ -32,27 +30,32 @@ public abstract class AbstractUsbX10Controller extends AbstractX10Controller {
 	}
 
 	@Override
-	public byte[] read(int lenght) {
-		this.open();
-		Device device = getDevice();
-		if (null != device) {
-			byte[] response = device.read(this.readEndpoint(), lenght);
-			this.close();
-			return response;
-		}
-		return new byte[] {};
+	public byte[] read(final int length) {
+		return doExecute(new Function() {
+			@Override public <T> T execute() {
+				return (T) getDevice().read(readEndpoint(), length);
+			}
+		});
 	}
 
 	@Override
-	public void write(byte[] sequence) {
-		this.open();
-		Utils.prettyPrint("Writing: ", sequence);
-		Device device = getDevice();
-		if (null != device) {
-			int written = device.write(this.writeEndpoint(), sequence);
-			if (written != sequence.length) {
-				LOGGER.error("written {} byte of {}", written, sequence.length);
+	public int write(final byte[] sequence) {
+		return doExecute(new Function() {
+			@Override public <T> T execute() {
+				Integer writtenBytes = getDevice().write(writeEndpoint(), sequence);
+				if(writtenBytes != sequence.length) {
+					LOGGER.error("written {} byte of {}", writtenBytes, sequence.length);
+				}
+				return (T) writtenBytes;
 			}
+		});
+	}
+
+	private <T> T doExecute(Function function) {
+		try {
+			this.open();
+			return function.execute();
+		} finally {
 			this.close();
 		}
 	}
@@ -60,4 +63,8 @@ public abstract class AbstractUsbX10Controller extends AbstractX10Controller {
 	protected abstract byte readEndpoint();
 
 	protected abstract byte writeEndpoint();
+
+	private interface Function {
+		public <T> T execute();
+	}
 }

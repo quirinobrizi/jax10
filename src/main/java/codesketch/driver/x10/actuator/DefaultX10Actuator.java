@@ -16,16 +16,14 @@ public class DefaultX10Actuator extends AbstractActuator {
 	public Boolean on() {
 		X10Controller controller = getController();
 		Command command = controller.command(Function.ON, getAddress(), null);
-		controller.execute(command);
-		return controller.ack();
+		return controller.execute(command);
 	}
 
 	@Override
 	public Boolean off() {
 		X10Controller controller = getController();
 		Command command = controller.command(Function.OFF, getAddress(), null);
-		controller.execute(command);
-		return controller.ack();
+		return controller.execute(command);
 	}
 
 	/*
@@ -37,8 +35,7 @@ public class DefaultX10Actuator extends AbstractActuator {
 	public Boolean dim(int amount) {
 		X10Controller controller = getController();
 		Command command = controller.command(Function.DIM, getAddress(), amount);
-		controller.execute(command);
-		return controller.ack();
+		return controller.execute(command);
 	}
 
 	/*
@@ -50,8 +47,7 @@ public class DefaultX10Actuator extends AbstractActuator {
 	public Boolean allLightsOn() {
 		X10Controller controller = getController();
 		Command command = controller.command(Function.ALL_LIGHTS_ON, getAddress(), null);
-		controller.execute(command);
-		return controller.ack();
+		return controller.execute(command);
 	}
 
 	/*
@@ -63,8 +59,7 @@ public class DefaultX10Actuator extends AbstractActuator {
 	public Boolean allLightsOff() {
 		X10Controller controller = getController();
 		Command command = controller.command(Function.ALL_LIGHTS_OFF, getAddress(), null);
-		controller.execute(command);
-		return controller.ack();
+		return controller.execute(command);
 	}
 
 	/*
@@ -76,8 +71,7 @@ public class DefaultX10Actuator extends AbstractActuator {
 	public Boolean allUnitsOff() {
 		X10Controller controller = getController();
 		Command command = controller.command(Function.ALL_UNITS_OFF, getAddress(), null);
-		controller.execute(command);
-		return controller.ack();
+		return controller.execute(command);
 	}
 
 	/*
@@ -88,7 +82,7 @@ public class DefaultX10Actuator extends AbstractActuator {
 	@Override
 	public String status() {
 		X10Controller controller = getController();
-		Command command = controller.command(Function.STATREQ, getAddress(), null);
+		Command command = controller.command(Function.STATUS, null, null);
 		controller.execute(command);
 		byte[] bytes = controller.read(16);
 		return Utils.formatHexToString(bytes);

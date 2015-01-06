@@ -31,11 +31,11 @@ public interface Controller {
 
 	/**
 	 * Execute a function on the controller. i.e. Turn on a light.
-	 * 
+	 *
 	 * @param command
 	 *            the command to execute
 	 */
-	void execute(Command command);
+	boolean execute(Command command);
 
 	/**
 	 * Open the device and set up the controller.
@@ -58,11 +58,11 @@ public interface Controller {
 
 	/**
 	 * Write a sequence off bytes to the controller.
-	 * 
+	 *
 	 * @param sequence
 	 *            the sequence of byte to have to write.
 	 */
-	void write(byte[] sequence);
+	int write(byte[] sequence);
 
 	/**
 	 * Verifies whether the controller responded well or not.

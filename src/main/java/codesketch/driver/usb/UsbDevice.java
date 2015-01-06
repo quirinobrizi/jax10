@@ -1,21 +1,15 @@
 package codesketch.driver.usb;
 
-import javax.usb.UsbConfiguration;
-import javax.usb.UsbEndpoint;
-import javax.usb.UsbException;
-import javax.usb.UsbInterface;
-import javax.usb.UsbIrp;
-import javax.usb.UsbPipe;
-import javax.usb.event.UsbDeviceListener;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import codesketch.driver.Device;
 import codesketch.driver.listener.EventListener;
 import codesketch.driver.x10.Utils;
 import codesketch.driver.x10.usb.X10EventListener;
 import codesketch.driver.x10.usb.exception.UsbOperationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.usb.*;
+import javax.usb.event.UsbDeviceListener;
 
 public class UsbDevice implements Device {
 
@@ -23,7 +17,7 @@ public class UsbDevice implements Device {
 
 	private final javax.usb.UsbDevice device;
 	private UsbConfiguration configuration;
-	private UsbInterface iface;
+	private UsbInterface usbInterface;
 
 	/**
 	 * @param device
@@ -34,36 +28,41 @@ public class UsbDevice implements Device {
 
 	@Override
 	public void open() {
-		this.configuration = this.device.getActiveUsbConfiguration();
+		if(null == this.configuration) {
+			this.configuration = this.device.getActiveUsbConfiguration();
+		}
 	}
 
 	@Override
 	public void claim() {
-		this.iface = (UsbInterface) this.configuration.getUsbInterfaces().get(0);
-		try {
-			if (!this.iface.isClaimed()) {
-				this.iface.claim();
+		if(null == this.usbInterface) {
+			this.usbInterface = (UsbInterface) this.configuration.getUsbInterfaces().get(0);
+			try {
+				if (!this.usbInterface.isClaimed()) {
+					this.usbInterface.claim();
+				}
+			} catch (Exception e) {
+				throw new UsbOperationException(e);
 			}
-		} catch (Exception e) {
-			throw new UsbOperationException(e);
 		}
 	}
 
 	@Override
 	public void close() {
 		try {
-			this.iface.release();
+			this.usbInterface.release();
+			this.usbInterface = null;
 		} catch (Exception e) {
 			throw new UsbOperationException(e);
 		}
 	}
 
 	@Override
-	public byte[] read(byte readEndpoint, int lenght) {
+	public byte[] read(byte readEndpoint, int length) {
 		UsbPipe pipe = null;
 		try {
 			pipe = retrieveAndOpenPipe(readEndpoint);
-			UsbIrp irp = buildUsbIrp(new byte[lenght], pipe);
+			UsbIrp irp = buildUsbIrp(new byte[length], pipe);
 			pipe.syncSubmit(irp);
 			return irp.getData();
 		} catch (Exception e) {
@@ -75,51 +74,22 @@ public class UsbDevice implements Device {
 
 	@Override
 	public int write(byte writeEndpoint, byte[] sequence) {
-
 		UsbPipe pipe = null;
 		try {
 			pipe = retrieveAndOpenPipe(writeEndpoint);
 			UsbIrp irp = buildUsbIrp(sequence, pipe);
-
 			pipe.syncSubmit(irp);
-
-			Utils.prettyPrint("Received: ", irp.getData());
+			LOGGER.debug("received on IRP: {}", Utils.formatHexToString(irp.getData()));
 			return irp.getActualLength();
 		} catch (Exception e) {
 			throw new UsbOperationException(e);
 		} finally {
 			this.silentlyReleasePipe(pipe);
 		}
-
-		// if (this.claimedInterface.containsUsbEndpoint(writeEndpoint)) {
-		// byte bmRequestType = (byte) (UsbConst.REQUESTTYPE_DIRECTION_OUT |
-		// UsbConst.REQUESTTYPE_DIRECTION_IN
-		// | UsbConst.REQUESTTYPE_TYPE_STANDARD |
-		// UsbConst.REQUESTTYPE_RECIPIENT_DEVICE);
-		// byte bRequest = (byte) (UsbConst.REQUESTTYPE_DIRECTION_IN |
-		// UsbConst.REQUESTTYPE_DIRECTION_OUT);
-		// short wValue = writeEndpoint;
-		// short wIndex = 0;
-		// UsbControlIrp controlIrp =
-		// this.device.createUsbControlIrp(bmRequestType, bRequest, wValue,
-		// wIndex);
-		// controlIrp.setData(sequence);
-		// try {
-		// this.device.syncSubmit(controlIrp);
-		// byte[] received = controlIrp.getData();
-		// this.print("Received: ", received);
-		// } catch (Exception e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		//
-		// } else {
-		//
-		// }
 	}
 
 	private UsbPipe retrieveAndOpenPipe(byte endpoint) throws UsbException {
-		UsbEndpoint usbEndpoint = this.iface.getUsbEndpoint(endpoint);
+		UsbEndpoint usbEndpoint = this.usbInterface.getUsbEndpoint(endpoint);
 		UsbPipe pipe = usbEndpoint.getUsbPipe();
 		if (!pipe.isOpen()) {
 			pipe.open();

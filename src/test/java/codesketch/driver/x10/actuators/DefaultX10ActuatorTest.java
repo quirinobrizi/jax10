@@ -13,7 +13,7 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
-public class SwitchableX10ActuatorTest {
+public class DefaultX10ActuatorTest {
 
 	@Test
 	public void testOn_success() {
@@ -29,8 +29,8 @@ public class SwitchableX10ActuatorTest {
 		DefaultX10Actuator testObj = new DefaultX10Actuator(address, controller);
 		Boolean success = testObj.on();
 
-		verify(device, times(3)).open();
-		verify(device, times(3)).claim();
+		verify(device, times(4)).open();
+		verify(device, times(4)).claim();
 		verify(device).write(anyByte(), eq(new byte[] { 0x04, 0x66 }));
 		verify(device).write(anyByte(), eq(new byte[] { 0x06, 0x62 }));
 		assertTrue(success);
@@ -50,8 +50,8 @@ public class SwitchableX10ActuatorTest {
 		DefaultX10Actuator testObj = new DefaultX10Actuator(address, controller);
 		Boolean success = testObj.off();
 
-		verify(device, times(3)).open();
-		verify(device, times(3)).claim();
+		verify(device, times(4)).open();
+		verify(device, times(4)).claim();
 		verify(device).write(anyByte(), eq(new byte[] { 0x04, 0x66 }));
 		verify(device).write(anyByte(), eq(new byte[] { 0x06, 0x63 }));
 		assertTrue(success);
